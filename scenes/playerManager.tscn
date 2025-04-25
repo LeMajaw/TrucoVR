@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2h3dqfbo5kv"]
+
+[ext_resource type="Script" uid="uid://cm1s87jx6hm5g" path="res://scripts/playerManager.gd" id="1_nskbd"]
+
+[node name="PlayerManager" type="Node3D"]
+script = ExtResource("1_nskbd")
+default_player_index = -1
+
+[node name="PlayerRoot" type="Node3D" parent="."]

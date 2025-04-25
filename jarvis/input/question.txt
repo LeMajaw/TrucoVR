@@ -1,0 +1,1 @@
+Can you help me to se up my arena scene to be the first one, where the player starts in one chair and 3 bots in the other (i didn't create the bots yet, but you can help me with that later, let's just set the players starting sitting on the chair first)

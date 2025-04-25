@@ -1,0 +1,54 @@
+extends Node
+
+# Usage example: CardRanks.set_vira("d6")  # Sets the vira (e.g., 6♦), makes 7s the manilhas
+
+# Order used in Truco Paulista
+const VALUE_ORDER = ["4", "5", "6", "7", "Q", "J", "K", "A", "2", "3"]
+const SUIT_STRENGTH = { "c": 4, "h": 3, "s": 2, "d": 1 } # for manilha comparison
+
+var manilha_values: Array[String] = []
+var vira_value: String = ""
+
+func set_vira(vira_card: String):
+	vira_value = vira_card.substr(1) # remove suit
+	var index = VALUE_ORDER.find(vira_value)
+	if index == -1:
+		push_warning("Unknown vira value: %s" % vira_value)
+		return
+
+	var next_index = (index + 1) % VALUE_ORDER.size()
+	var manilha_value = VALUE_ORDER[next_index]
+	manilha_values.clear()
+
+	for suit in ["s", "h", "d", "c"]:
+		manilha_values.append("%s%s" % [suit, manilha_value])
+
+func is_manilha(card_id: String) -> bool:
+	return card_id in manilha_values
+
+func compare_cards(card_a: String, card_b: String) -> int:
+	var a_is_manilha = is_manilha(card_a)
+	var b_is_manilha = is_manilha(card_b)
+
+	if a_is_manilha and b_is_manilha:
+		# Compare suit strength if both are manilha
+		var a_suit = card_a.substr(0, 1)
+		var b_suit = card_b.substr(0, 1)
+		return SUIT_STRENGTH[a_suit] - SUIT_STRENGTH[b_suit]
+
+	elif a_is_manilha:
+		return 1
+	elif b_is_manilha:
+		return -1
+
+	# Not manilha — use VALUE_ORDER
+	var a_value = card_a.substr(1)
+	var b_value = card_b.substr(1)
+	var a_index = VALUE_ORDER.find(a_value)
+	var b_index = VALUE_ORDER.find(b_value)
+
+	if a_index == -1 or b_index == -1:
+		push_warning("Unknown card value comparison: %s vs %s" % [card_a, card_b])
+		return 0
+
+	return b_index - a_index # higher in list = stronger

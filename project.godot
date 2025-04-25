@@ -11,5 +11,16 @@ config_version=5
 [application]
 
 config/name="TrucoVR"
+run/main_scene="uid://c44gxaitg88s8"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[filesystem]
+
+import/blender/enabled=false
+
+[xr]
+
+openxr/extensions/hand_tracking=true
+openxr/extensions/hand_tracking_unobstructed_data_source=true
+shaders/enabled=true

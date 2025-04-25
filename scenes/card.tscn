@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdyhug7gqb7x4"]
+
+[ext_resource type="Script" uid="uid://bdcfobxlp7uju" path="res://scripts/card.gd" id="1_6u4wf"]
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="2_ktuci"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e484p"]
+size = Vector3(0.06, 0.002, 0.09)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6u4wf"]
+size = Vector2(0.06, 0.002)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ktuci"]
+size = Vector2(0.06, 0.002)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fpac0"]
+size = Vector3(0.06, 0.002, 0.09)
+
+[node name="Card" type="Node3D"]
+script = ExtResource("1_6u4wf")
+
+[node name="PickableObject" parent="." instance=ExtResource("2_ktuci")]
+
+[node name="CardBody" type="MeshInstance3D" parent="PickableObject"]
+mesh = SubResource("BoxMesh_e484p")
+
+[node name="Front" type="MeshInstance3D" parent="PickableObject/CardBody"]
+mesh = SubResource("PlaneMesh_6u4wf")
+
+[node name="Back" type="MeshInstance3D" parent="PickableObject/CardBody"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ktuci")
+skeleton = NodePath("../Front")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="PickableObject"]
+shape = SubResource("BoxShape3D_fpac0")
