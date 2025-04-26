@@ -1,84 +1,54 @@
 extends Node3D
 class_name Arena
 
-# Chair placement config
-@export var chair_distance: float = 1.4
-@export var chair_y_offset: float = -0.75
+# Scenes
+var deck_scene: PackedScene = preload("res://scenes/deck.tscn")
+var bot_scene: PackedScene = preload("res://scenes/bot.tscn")
 
-# Runtime assignments
-var table_node: Node3D
-var chair_scene: PackedScene
-var deck_scene: PackedScene
+# Instances
 var deck_instance: Deck
-var chairs: Array[Node3D] = []  # Store chairs for multiplayer usage
+var chairs: Array[Chair] = []
 
-func _ready():
-	var xr_interface = XRServer.find_interface("OpenXR")
-	if xr_interface and xr_interface.is_initialized():
-		XRServer.primary_interface = xr_interface
-		get_viewport().use_xr = true
-		print("✅ OpenXR initialized (XR active)")
-	else:
-		push_warning("❗ OpenXR not initialized!")
+# Nodes
+@onready var table_node: Node3D = $Table
+@onready var player_chair: Chair = $Chairs/Chair1
+@onready var player: Node3D = $Chairs/Chair1/Player
 
-	# ✅ Assign scenes and nodes manually
-	table_node = $Table
-	chair_scene = preload("res://scenes/chair.tscn")
-	deck_scene = preload("res://scenes/deck.tscn")
-
-	await get_tree().process_frame
-
-	_place_chairs()
-	await get_tree().process_frame  # Ensure chair nodes are added before seating
-	_seat_player($Player)
-
-	_spawn_deck()
-
-func _place_chairs():
-	if not chair_scene or not is_instance_valid(table_node):
-		push_error("Chair scene or table node not set!")
-		return
-
-	var center = table_node.global_transform.origin
-
-	var chair_data = [
-		{ "pos": Vector3(0, 0, -chair_distance), "rot": deg_to_rad(0) },
-		{ "pos": Vector3(chair_distance, 0, 0), "rot": deg_to_rad(270) },
-		{ "pos": Vector3(0, 0, chair_distance), "rot": deg_to_rad(180) },
-		{ "pos": Vector3(-chair_distance, 0, 0), "rot": deg_to_rad(90) }
+func _ready() -> void:
+	chairs = [
+		$Chairs/Chair1,
+		$Chairs/Chair2,
+		$Chairs/Chair3,
+		$Chairs/Chair4
 	]
 
-	chairs.clear()
-	for data in chair_data:
-		var chair = chair_scene.instantiate() as Node3D
-		add_child(chair)
+	await get_tree().process_frame # Wait for full scene load
 
-		var pos = center + data.pos
-		pos.y += chair_y_offset
-		chair.global_position = pos
-		chair.rotate_y(data.rot)
+	_seat_player(player)
+	_spawn_deck()
+	_spawn_bots()
 
-		chairs.append(chair)
-
-func _seat_player(player: Node3D):
-	if not is_instance_valid(player):
+# --- Player Seating ---
+func _seat_player(player_node: Node3D) -> void:
+	if not is_instance_valid(player_node):
 		push_error("Player not found.")
 		return
 
-	var available_chair = get_available_chair()
-	if available_chair and available_chair.has_method("seat_player"):
-		available_chair.seat_player(player)
-		print("🪑 Player seated at chair: ", available_chair.name)
-	else:
-		push_warning("⚠️ No available chair to seat the player.")
+	player_chair.seat_player(player_node)
 
-func get_available_chair() -> Node3D:
+	# Lower the player a lot more
+	player_node.transform.origin.y -= 0.75
+
+	print("🪑 Player correctly seated and rotated at Chair1.")
+
+func get_available_chair() -> Chair:
 	for chair in chairs:
-		if chair.has_method("is_available") and chair.is_available():
+		if chair and chair.is_available():
 			return chair
 	return null
 
-func _spawn_deck():
+# --- Deck Spawn ---
+func _spawn_deck() -> void:
 	if not deck_scene or not is_instance_valid(table_node):
 		push_warning("Deck scene not assigned or table not ready.")
 		return
@@ -100,3 +70,38 @@ func _spawn_deck():
 	deck_instance.global_transform = deck_transform
 
 	print("✅ Deck placed at: ", deck_instance.global_transform.origin)
+
+# --- Bot Spawn ---
+func _spawn_bots() -> void:
+	var bot1: Bot = bot_scene.instantiate() as Bot
+	var bot2: Bot = bot_scene.instantiate() as Bot
+	var bot3: Bot = bot_scene.instantiate() as Bot
+
+	bot1.team = Bot.Team.ENEMY_TEAM
+	bot2.team = Bot.Team.PLAYER_TEAM
+	bot3.team = Bot.Team.ENEMY_TEAM
+
+	# (Optional) Set difficulty here if want different bot skins
+	bot1.difficulty = Bot.Difficulty.EASY
+	bot2.difficulty = Bot.Difficulty.EASY
+	bot3.difficulty = Bot.Difficulty.EASY
+
+	add_child(bot1)
+	add_child(bot2)
+	add_child(bot3)
+
+	_seat_bot(bot1, $Chairs/Chair2)
+	_seat_bot(bot2, $Chairs/Chair3)
+	_seat_bot(bot3, $Chairs/Chair4)
+
+func _seat_bot(bot: Bot, chair: Chair) -> void:
+	if not is_instance_valid(bot) or not is_instance_valid(chair):
+		push_warning("❗ Bot or Chair invalid.")
+		return
+
+	chair.seat_player(bot)
+
+	# After seating, lift the bot a bit more manually
+	bot.translate(Vector3(0, 0.3, 0)) # Lift bot 0.3 meters up
+
+	print("🤖", bot.name, "seated at", chair.name)

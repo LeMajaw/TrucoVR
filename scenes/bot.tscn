@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://nrx2r7rndgf"]
+
+[ext_resource type="Script" uid="uid://i3k2pfe42aqc" path="res://scripts/bot.gd" id="1_cwism"]
+
+[node name="Bot" type="Node3D"]
+script = ExtResource("1_cwism")
+
+[node name="Skin" type="Node3D" parent="."]

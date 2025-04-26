@@ -265,7 +265,6 @@ metadata/_custom_type_script = "uid://cviujtlkqkja5"
 [node name="Player" type="XROrigin3D"]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 
 [node name="LeftTrackedHand" type="XRNode3D" parent="."]
 tracker = &"/user/hand_tracker/left"

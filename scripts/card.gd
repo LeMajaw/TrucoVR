@@ -5,12 +5,24 @@ class_name Card
 @export var back_texture: Texture2D
 @export var card_name: String = "" # Ex: "sA", "h7"
 
-@onready var front_material: StandardMaterial3D = $FrontMesh.material_override
-@onready var back_material: StandardMaterial3D = $BackMesh.material_override
-
+var front_material: StandardMaterial3D = null
+var back_material: StandardMaterial3D = null
 var is_face_up: bool = false
 
 func _ready() -> void:
+	var front_mesh = get_node_or_null("PickableObject/CardBody/Front")
+	var back_mesh = get_node_or_null("PickableObject/CardBody/Back")
+
+	if front_mesh and front_mesh.has_method("get_material_override"):
+		front_material = front_mesh.material_override
+	else:
+		push_warning("⚠️ Front mesh not found or missing material override.")
+
+	if back_mesh and back_mesh.has_method("get_material_override"):
+		back_material = back_mesh.material_override
+	else:
+		push_warning("⚠️ Back mesh not found or missing material override.")
+
 	_update_textures()
 
 func set_card(id: String, face_up: bool = false) -> void:
@@ -30,7 +42,6 @@ func get_strength() -> int:
 	if CardRanks.is_manilha(card_name):
 		return 99
 	else:
-		# Lower index = stronger card
 		var value = card_name.substr(1)
 		var index = CardRanks.VALUE_ORDER.find(value)
 		if index == -1:
@@ -38,7 +49,6 @@ func get_strength() -> int:
 		return CardRanks.VALUE_ORDER.size() - index
 
 # Compare to another card
-# Returns 1 if this card wins, -1 if loses, 0 if tie
 func compare_to(other: Card) -> int:
 	return CardRanks.compare_cards(card_name, other.card_name)
 

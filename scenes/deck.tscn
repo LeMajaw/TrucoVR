@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bju2shr0rjh3"]
+[gd_scene load_steps=5 format=3 uid="uid://dcxjpa5ovt3gi"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_6rnap"]
-[ext_resource type="Script" uid="uid://mrbprh4idfke" path="res://scripts/deck.gd" id="1_gdbsr"]
-[ext_resource type="PackedScene" uid="uid://bdyhug7gqb7x4" path="res://scenes/card.tscn" id="2_gdbsr"]
+[ext_resource type="Script" uid="uid://dh75tkiuv858q" path="res://scripts/deck.gd" id="1_gdbsr"]
+[ext_resource type="PackedScene" uid="uid://o7iwokoejv60" path="res://scenes/card.tscn" id="2_gdbsr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gdbsr"]
 size = Vector3(0.1, 0.05, 0.15)

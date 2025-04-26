@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c44gxaitg88s8"]
+[gd_scene load_steps=11 format=3 uid="uid://c44gxaitg88s8"]
 
 [ext_resource type="Script" uid="uid://cpysmww28ym6w" path="res://scripts/arena.gd" id="1_xdvfk"]
 [ext_resource type="PackedScene" uid="uid://dvklmuafs5xs6" path="res://scenes/player.tscn" id="2_7ft05"]
 [ext_resource type="PackedScene" uid="uid://33ne0e6hpwbu" path="res://scenes/table.tscn" id="3_4ag8t"]
+[ext_resource type="PackedScene" uid="uid://bw32k40cupas" path="res://scenes/chair.tscn" id="4_ahd73"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="5_7ft05"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
@@ -27,11 +28,25 @@ size = Vector2(10, 10)
 [node name="Arena" type="Node3D"]
 script = ExtResource("1_xdvfk")
 
-[node name="Player" parent="." instance=ExtResource("2_7ft05")]
+[node name="Table" parent="." instance=ExtResource("3_4ag8t")]
+transform = Transform3D(0.015, 0, 0, 0, 0.012, 0, 0, 0, 0.015, 0, 0.03, 0)
+
+[node name="Chairs" type="Node3D" parent="."]
+
+[node name="Chair1" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 1.3)
+
+[node name="Player" parent="Chairs/Chair1" instance=ExtResource("2_7ft05")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
-[node name="Table" parent="." instance=ExtResource("3_4ag8t")]
-transform = Transform3D(0.015, 0, 0, 0, 0.01, 0, 0, 0, 0.015, 0, -0.4, 0)
+[node name="Chair2" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.3, 0, 0)
+
+[node name="Chair3" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.3)
+
+[node name="Chair4" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1.3, 0, 0)
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -43,13 +58,12 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.5
 shadow_enabled = true
 sky_mode = 1
 
-[node name="StartXR" parent="Environment" instance=ExtResource("5_7ft05")]
-
 [node name="Floor" type="StaticBody3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Floor"]
 shape = SubResource("BoxShape3D_0xm2m")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Floor"]
 mesh = SubResource("PlaneMesh_0xm2m")
+
+[node name="StartXR" parent="Environment" instance=ExtResource("5_7ft05")]
