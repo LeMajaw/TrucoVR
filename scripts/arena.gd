@@ -36,10 +36,13 @@ func _seat_player(player_node: Node3D) -> void:
 
 	player_chair.seat_player(player_node)
 
-	# Lower the player a lot more
-	player_node.transform.origin.y -= 0.75
+	# Force XR rig to correct world position
+	var xr_origin = player_node.get_node_or_null("XROrigin3D")
+	if xr_origin:
+		var chair_position = player_chair.global_transform.origin
+		xr_origin.global_transform.origin = chair_position + Vector3(0, 0.4, 0)
 
-	print("🪑 Player correctly seated and rotated at Chair1.")
+	print("🪑 Player correctly seated and centered at Chair1.")
 
 func get_available_chair() -> Chair:
 	for chair in chairs:
