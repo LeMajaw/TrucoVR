@@ -4,8 +4,10 @@ class_name Arena
 # Scenes
 var deck_scene: PackedScene = preload("res://scenes/deck.tscn")
 var bot_scene: PackedScene = preload("res://scenes/bot.tscn")
+var palm_menu_scene: PackedScene = preload("res://scenes/palmMenu.tscn")
 
 # Instances
+var palm_menu_instance: MeshInstance3D
 var deck_instance: Deck
 var chairs: Array[Chair] = []
 
@@ -13,6 +15,14 @@ var chairs: Array[Chair] = []
 @onready var table_node: Node3D = $Table
 @onready var player_chair: Chair = $Chairs/Chair1
 @onready var player: Node3D = $Chairs/Chair1/Player
+@onready var left_hand: Node3D = $Chairs/Chair1/Player/LeftTrackedHand
+@onready var right_hand: Node3D = $Chairs/Chair1/Player/RightTrackedHand
+
+# PalmMenu Management
+var fade_speed := 5.0
+var is_menu_visible := false
+var attached_hand: Node3D = null
+var requested_hand: Node3D = null
 
 func _ready() -> void:
 	chairs = [
@@ -22,11 +32,81 @@ func _ready() -> void:
 		$Chairs/Chair4
 	]
 
-	await get_tree().process_frame # Wait for full scene load
+	await get_tree().process_frame
 
 	_seat_player(player)
+	_spawn_palm_menu()
 	_spawn_deck()
 	_spawn_bots()
+
+func _process(delta: float) -> void:
+	_update_palm_menu(delta)
+
+# --- Palm Menu Logic ---
+func _spawn_palm_menu() -> void:
+	palm_menu_instance = palm_menu_scene.instantiate() as MeshInstance3D
+	add_child(palm_menu_instance)
+
+	palm_menu_instance.visible = false
+
+	var material: Material = palm_menu_instance.get_surface_override_material(0)
+	if material and material is StandardMaterial3D:
+		var mat = material as StandardMaterial3D
+		mat.albedo_color.a = 0.0
+
+func _update_palm_menu(delta: float) -> void:
+	var left_up = is_palm_facing_up(left_hand)
+	var right_up = is_palm_facing_up(right_hand)
+
+	if left_up:
+		requested_hand = left_hand
+		is_menu_visible = true
+	elif right_up:
+		requested_hand = right_hand
+		is_menu_visible = true
+	else:
+		requested_hand = null
+		is_menu_visible = false
+
+	_fade_and_switch_menu(delta)
+
+func is_palm_facing_up(hand: Node3D) -> bool:
+	if not hand:
+		return false
+	var hand_up_vector = hand.global_transform.basis.y
+	return hand_up_vector.dot(Vector3.UP) > 0.7
+
+func _fade_and_switch_menu(delta: float) -> void:
+	if not palm_menu_instance:
+		return
+
+	var material: Material = palm_menu_instance.get_surface_override_material(0)
+	if not material or not (material is StandardMaterial3D):
+		return
+
+	var mat = material as StandardMaterial3D
+	var target_alpha := 1.0 if is_menu_visible else 0.0
+
+	var current_color: Color = mat.albedo_color
+	current_color.a = lerp(current_color.a, target_alpha, fade_speed * delta)
+	mat.albedo_color = current_color
+
+	if is_menu_visible:
+		palm_menu_instance.visible = true
+	else:
+		if mat.albedo_color.a < 0.01:
+			palm_menu_instance.visible = false
+			attached_hand = null
+
+func _reattach_palm_menu(new_hand: Node3D) -> void:
+	if not new_hand:
+		return
+
+	palm_menu_instance.get_parent().remove_child(palm_menu_instance)
+	new_hand.add_child(palm_menu_instance)
+	palm_menu_instance.transform = Transform3D.IDENTITY
+	palm_menu_instance.translate(Vector3(0, 0.15, 0))
+	attached_hand = new_hand
 
 # --- Player Seating ---
 func _seat_player(player_node: Node3D) -> void:
@@ -36,13 +116,15 @@ func _seat_player(player_node: Node3D) -> void:
 
 	player_chair.seat_player(player_node)
 
-	# Force XR rig to correct world position
 	var xr_origin = player_node.get_node_or_null("XROrigin3D")
 	if xr_origin:
-		var chair_position = player_chair.global_transform.origin
-		xr_origin.global_transform.origin = chair_position + Vector3(0, 0.4, 0)
+		var xr_camera = xr_origin.get_node_or_null("XRCamera3D")
+		if xr_camera:
+			var headset_offset = xr_camera.transform.origin
+			var chair_position = player_chair.global_transform.origin
+			xr_origin.global_transform.origin = chair_position - headset_offset + Vector3(0, 0.4, 0)
 
-	print("🪑 Player correctly seated and centered at Chair1.")
+	print("\uD83E\uDE91 Player correctly seated and aligned at Chair1.")
 
 func get_available_chair() -> Chair:
 	for chair in chairs:
@@ -72,7 +154,7 @@ func _spawn_deck() -> void:
 	deck_transform.origin += Vector3.UP * 0.01
 	deck_instance.global_transform = deck_transform
 
-	print("✅ Deck placed at: ", deck_instance.global_transform.origin)
+	print("✅ Deck placed at:", deck_instance.global_transform.origin)
 
 # --- Bot Spawn ---
 func _spawn_bots() -> void:
@@ -84,10 +166,9 @@ func _spawn_bots() -> void:
 	bot2.team = Bot.Team.PLAYER_TEAM
 	bot3.team = Bot.Team.ENEMY_TEAM
 
-	# (Optional) Set difficulty here if want different bot skins
-	bot1.difficulty = Bot.Difficulty.EASY
-	bot2.difficulty = Bot.Difficulty.EASY
-	bot3.difficulty = Bot.Difficulty.EASY
+	bot1.difficulty = Bot.Difficulty.NORMAL
+	bot2.difficulty = Bot.Difficulty.HARD
+	bot3.difficulty = Bot.Difficulty.EXPERT
 
 	add_child(bot1)
 	add_child(bot2)
@@ -99,12 +180,11 @@ func _spawn_bots() -> void:
 
 func _seat_bot(bot: Bot, chair: Chair) -> void:
 	if not is_instance_valid(bot) or not is_instance_valid(chair):
-		push_warning("❗ Bot or Chair invalid.")
+		push_warning("\u2757 Bot or Chair invalid.")
 		return
 
 	chair.seat_player(bot)
+	bot.translate(Vector3(0, 1.2, 0))
+	bot.scale = Vector3(0.35, 0.35, 0.35)
 
-	# After seating, lift the bot a bit more manually
-	bot.translate(Vector3(0, 0.3, 0)) # Lift bot 0.3 meters up
-
-	print("🤖", bot.name, "seated at", chair.name)
+	print("\uD83E\uDD16", bot.name, "seated at", chair.name)

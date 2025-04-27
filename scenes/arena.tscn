@@ -14,10 +14,16 @@ ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
 sky_material = SubResource("ProceduralSkyMaterial_0xm2m")
 
 [sub_resource type="Environment" id="Environment_1bvp3"]
-background_mode = 2
+background_mode = 1
 sky = SubResource("Sky_h2yge")
 tonemap_mode = 2
+tonemap_exposure = 0.5
 glow_enabled = true
+glow_intensity = 0.4
+glow_strength = 0.7
+glow_bloom = 0.25
+glow_blend_mode = 0
+glow_hdr_threshold = 1.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0xm2m"]
 size = Vector3(10, 0.001, 10)

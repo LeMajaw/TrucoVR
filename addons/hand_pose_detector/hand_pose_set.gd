@@ -10,14 +10,14 @@ extends Resource
 
 
 ## Array of hand poses
-@export var poses : Array[HandPose] = []
+@export var poses: Array[HandPose] = []
 
 
 ## Returns the best pose for the specified [param hand].
-func find_pose(hand : HandPoseData) -> HandPose:
+func find_pose(hand: HandPoseData) -> HandPose:
 	# Search for the best pose
-	var best_pose : HandPose = null
-	var best_fitness : float = 0.0
+	var best_pose: HandPose = null
+	var best_fitness: float = 0.0
 	for p in poses:
 		var f := p.get_fitness(hand)
 		if f > best_fitness:

@@ -1,1 +1,6 @@
-Can you help me to be sure the deck is appearing on the table?
+Can you help me to create an interface as this one on the image that appears when the player turns their hand (any of them) to the top?
+This interface must contain:
+1 - Space for 3 cards (the max, but can be 0 as well)
+2 - A clickable via VR button write "TRUCO"
+3 - A gear icon to access the configuration (for now must trigger a print message as this screen doesn't exist)
+3 - A three lines icon (or house icon, what you think represents the Menu better in games) to access the Menu (for now must trigger a print message as this screen doesn't exist)
