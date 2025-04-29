@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bckgs23v78g6c"]
+
+[ext_resource type="ArrayMesh" uid="uid://bnbfoi5j37x6i" path="res://addons/kaykit_dungeon_remastered/Assets/mesh/door.mesh" id="1_swyk6"]
+
+[node name="Door" type="MeshInstance3D"]
+mesh = ExtResource("1_swyk6")

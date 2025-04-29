@@ -33,7 +33,8 @@ func _ready() -> void:
 	]
 
 	await get_tree().process_frame
-
+	await get_tree().create_timer(0.2).timeout
+	
 	_seat_player(player)
 	_spawn_palm_menu()
 	_spawn_deck()
@@ -86,15 +87,23 @@ func _fade_and_switch_menu(delta: float) -> void:
 
 	var mat = material as StandardMaterial3D
 	var target_alpha := 1.0 if is_menu_visible else 0.0
+	var target_scale := Vector3(0.6, 1.0, 0.6) if is_menu_visible else Vector3(0.01, 1.0, 0.01)
 
+	# Animate alpha
 	var current_color: Color = mat.albedo_color
 	current_color.a = lerp(current_color.a, target_alpha, fade_speed * delta)
 	mat.albedo_color = current_color
 
+	# Animate scale (opening or closing)
+	palm_menu_instance.scale = palm_menu_instance.scale.lerp(target_scale, fade_speed * delta)
+
+	# Visibility control
 	if is_menu_visible:
 		palm_menu_instance.visible = true
+		if requested_hand and attached_hand != requested_hand and mat.albedo_color.a > 0.99:
+			_reattach_palm_menu(requested_hand)
 	else:
-		if mat.albedo_color.a < 0.01:
+		if mat.albedo_color.a < 0.01 and palm_menu_instance.scale.x < 0.02:
 			palm_menu_instance.visible = false
 			attached_hand = null
 
@@ -102,10 +111,15 @@ func _reattach_palm_menu(new_hand: Node3D) -> void:
 	if not new_hand:
 		return
 
+	# Reparent
 	palm_menu_instance.get_parent().remove_child(palm_menu_instance)
 	new_hand.add_child(palm_menu_instance)
+
+	# Reset transform to match palm
 	palm_menu_instance.transform = Transform3D.IDENTITY
-	palm_menu_instance.translate(Vector3(0, 0.15, 0))
+	palm_menu_instance.translation = Vector3(0, 0.15, 0)
+	palm_menu_instance.rotation = Vector3.ZERO  # force no weird tilt
+
 	attached_hand = new_hand
 
 # --- Player Seating ---
