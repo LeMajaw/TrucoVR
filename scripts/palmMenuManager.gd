@@ -1,40 +1,42 @@
-extends Node3D
+## PalmMenuManager.gd
+##
+## Singleton manager to coordinate visibility of palm-up menus for left and right hands.
+## Ensures that only one menu is shown at a time.
 
-@onready var palm_menu = $PalmMenu
-@onready var left_hand = $Hand_Left
-@onready var right_hand = $Hand_Right
+extends Node
 
-# Fade settings
-var fade_speed := 5.0 # How fast it fades (higher = faster)
-var is_menu_visible := false
+## Reference to the left hand's PalmMenu instance (set at runtime)
+var left_menu: Node = null
 
-func _ready() -> void:
-	# Start hidden
-	palm_menu.visible = false
-	palm_menu.modulate.a = 0.0
+## Reference to the right hand's PalmMenu instance (set at runtime)
+var right_menu: Node = null
 
-func _process(delta: float) -> void:
-	# Check palm orientation
-	if is_palm_facing_up(left_hand) or is_palm_facing_up(right_hand):
-		is_menu_visible = true
+
+## Registers a PalmMenu instance for the left or right hand
+func register_menu(is_left: bool, menu: Node):
+	if is_left:
+		left_menu = menu
 	else:
-		is_menu_visible = false
+		right_menu = menu
 
-	# Smooth fade
-	_fade_menu(delta)
 
-func is_palm_facing_up(hand: Node3D) -> bool:
-	if not hand:
-		return false
-
-	var hand_up_vector = hand.global_transform.basis.y
-	return hand_up_vector.dot(Vector3.UP) > 0.7
-
-func _fade_menu(delta: float) -> void:
-	if is_menu_visible:
-		palm_menu.visible = true
-		palm_menu.modulate.a = lerp(palm_menu.modulate.a, 1.0, fade_speed * delta)
+## Shows the PalmMenu for the specified hand, and hides the other
+func show_menu(is_left: bool):
+	if is_left:
+		if right_menu:
+			right_menu.visible = false
+		if left_menu:
+			left_menu.visible = true
 	else:
-		palm_menu.modulate.a = lerp(palm_menu.modulate.a, 0.0, fade_speed * delta)
-		if palm_menu.modulate.a < 0.01:
-			palm_menu.visible = false
+		if left_menu:
+			left_menu.visible = false
+		if right_menu:
+			right_menu.visible = true
+
+
+## Hides the PalmMenu for the specified hand (if it's visible)
+func hide_menu(is_left: bool):
+	if is_left and left_menu:
+		left_menu.visible = false
+	elif not is_left and right_menu:
+		right_menu.visible = false

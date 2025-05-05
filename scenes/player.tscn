@@ -1,6 +1,7 @@
-[gd_scene load_steps=25 format=4 uid="uid://dvklmuafs5xs6"]
+[gd_scene load_steps=26 format=4 uid="uid://dvklmuafs5xs6"]
 
 [ext_resource type="Texture2D" uid="uid://jmog4gftnc6" path="res://addons/hand_pose_detector/hands/hand.png" id="1_3v2ag"]
+[ext_resource type="Script" uid="uid://dfq64a24in3ih" path="res://scripts/player.gd" id="1_jej6c"]
 [ext_resource type="PackedScene" uid="uid://bh8isvqs258cp" path="res://addons/hand_pose_detector/hand_pose_controller.tscn" id="2_3v2ag"]
 [ext_resource type="PackedScene" uid="uid://bl6r5mv1s78r8" path="res://scenes/palmMenu.tscn" id="2_d2wvv"]
 [ext_resource type="Script" uid="uid://dbe3d5wbjx3a2" path="res://addons/hand_pose_detector/hand_pose_action.gd" id="3_jej6c"]
@@ -264,8 +265,10 @@ poses = Array[ExtResource("8_fulsm")]([ExtResource("4_f1ej7"), ExtResource("5_op
 metadata/_custom_type_script = "uid://cviujtlkqkja5"
 
 [node name="Player" type="XROrigin3D"]
+script = ExtResource("1_jej6c")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.6, 0)
 
 [node name="LeftTrackedHand" type="XRNode3D" parent="."]
 tracker = &"/user/hand_tracker/left"
@@ -647,6 +650,7 @@ skin = SubResource("Skin_a8ls1")
 hand_tracker = &"/user/hand_tracker/right"
 
 [node name="PalmMenu" parent="RightTrackedHand" instance=ExtResource("2_d2wvv")]
+is_left_hand = false
 
 [node name="HandPoseController" parent="RightTrackedHand" instance=ExtResource("2_3v2ag")]
 controller_tracker_name = "/user/hand_pose_controller/right"

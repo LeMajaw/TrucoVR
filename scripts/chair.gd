@@ -26,7 +26,3 @@ func seat_player(player: Node3D):
 
 	seated_player = player
 	print("🪑", player.name, "seated at", self.name)
-
-
-func is_available() -> bool:
-	return seated_player == null or not is_instance_valid(seated_player)

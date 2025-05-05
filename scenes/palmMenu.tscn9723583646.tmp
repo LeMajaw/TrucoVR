@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://bl6r5mv1s78r8"]
+
+[ext_resource type="Script" uid="uid://c088kye1hl7k8" path="res://scripts/palmMenu.gd" id="1_37qpl"]
+[ext_resource type="Script" uid="uid://cde3r11qku5hy" path="res://addons/godot-xr-tools/interactables/interactable_area_button.gd" id="1_g4gdb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4gdb"]
+transparency = 1
+albedo_color = Color(0.101961, 0.101961, 0.101961, 0.498039)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_37qpl"]
+material = SubResource("StandardMaterial3D_g4gdb")
+size = Vector2(0.2, 0.4)
+
+[sub_resource type="TextMesh" id="TextMesh_g4gdb"]
+text = "TRUCO!"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g4gdb"]
+size = Vector3(0.04, 0.02, 0.06)
+
+[sub_resource type="TextMesh" id="TextMesh_37qpl"]
+text = "Confiiguration"
+
+[sub_resource type="TextMesh" id="TextMesh_2my3i"]
+text = "Menu"
+
+[node name="PalmMenu" type="MeshInstance3D"]
+mesh = SubResource("PlaneMesh_37qpl")
+script = ExtResource("1_37qpl")
+
+[node name="CardSlots" type="Node3D" parent="."]
+
+[node name="CardSlot1" type="Marker3D" parent="CardSlots"]
+
+[node name="CardSlot2" type="Marker3D" parent="CardSlots"]
+
+[node name="CardSlot3" type="Marker3D" parent="CardSlots"]
+
+[node name="TrucoButton" type="Area3D" parent="."]
+script = ExtResource("1_g4gdb")
+button = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://cde3r11qku5hy"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TrucoButton"]
+mesh = SubResource("TextMesh_g4gdb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrucoButton"]
+shape = SubResource("BoxShape3D_g4gdb")
+
+[node name="ConfigButton" type="Area3D" parent="."]
+script = ExtResource("1_g4gdb")
+button = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://cde3r11qku5hy"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ConfigButton"]
+mesh = SubResource("TextMesh_37qpl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConfigButton"]
+shape = SubResource("BoxShape3D_g4gdb")
+
+[node name="MenuButton" type="Area3D" parent="."]
+script = ExtResource("1_g4gdb")
+button = NodePath("MeshInstance3D")
+metadata/_custom_type_script = "uid://cde3r11qku5hy"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MenuButton"]
+mesh = SubResource("TextMesh_2my3i")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MenuButton"]
+shape = SubResource("BoxShape3D_g4gdb")
+
+[connection signal="button_pressed" from="TrucoButton" to="." method="_on_button_truco_pressed"]
+[connection signal="button_pressed" from="ConfigButton" to="." method="_on_button_config_pressed"]
+[connection signal="button_pressed" from="MenuButton" to="." method="_on_button_menu_pressed"]

@@ -15,13 +15,13 @@ extends HandPoseDetector
 
 ## Pose Type
 enum PoseType {
-	SKELETON,	## Skeleton pose (palm pose)
-	AIM,		## Aim pose (aiming pose)
-	GRIP		## Grip pose (gripping pose)
+	SKELETON, ## Skeleton pose (palm pose)
+	AIM, ## Aim pose (aiming pose)
+	GRIP ## Grip pose (gripping pose)
 }
 
 # Table of left-hand pose transforms by PoseType
-const _POSE_TRANSFORMS_LEFT : Array[Transform3D] = [
+const _POSE_TRANSFORMS_LEFT: Array[Transform3D] = [
 	# Skeleton-pose (identity)
 	Transform3D(
 		Basis.IDENTITY,
@@ -39,7 +39,7 @@ const _POSE_TRANSFORMS_LEFT : Array[Transform3D] = [
 ]
 
 # Table of right-hand pose transforms by PoseType
-const _POSE_TRANSFORMS_RIGHT : Array[Transform3D] = [
+const _POSE_TRANSFORMS_RIGHT: Array[Transform3D] = [
 	# Skeleton-pose (identity)
 	Transform3D(
 		Basis.IDENTITY,
@@ -60,28 +60,42 @@ const _POSE_TRANSFORMS_RIGHT : Array[Transform3D] = [
 @export_group("Controller", "controller_")
 
 ## Name for the virtual controller tracker
-@export var controller_tracker_name : String = "/user/hand_pose_controller/left"
+@export var controller_tracker_name: String = "/user/hand_pose_controller/left"
 
 ## Pose type
-@export var controller_pose_type : PoseType = PoseType.SKELETON
+@export var controller_pose_type: PoseType = PoseType.SKELETON
 
 ## Hand poses generating boolean values
-@export var controller_action_map : HandPoseActionMap
+@export var controller_action_map: HandPoseActionMap
 
+## Reference to the PalmMenu node, assumed to be a sibling of this controller.
+@onready var palm_menu := $"../PalmMenu"
+
+## Whether this hand is the left hand (true) or right hand (false)
+@export var is_left_hand: bool = true
+
+## Threshold for considering a hand to be "palm up" (dot product vs. world up)
+@export_range(0.0, 1.0, 0.01)
+var palm_up_threshold := 0.85
 
 ## Controller Tracker
-var controller_tracker : XRControllerTracker
+var controller_tracker: XRControllerTracker
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Call the base
-	super()
+	super ()
 
 	# Skip if in editor
 	if Engine.is_editor_hint():
 		set_process(false)
 		return
+	else:
+		# Hide the menu initially and register this hand's menu in the global manager.
+		palm_menu.visible = false
+		PalmMenuManager.register_menu(is_left_hand, palm_menu)
+
 
 	# If the hand-pose-set is not specified then construct one dynamically
 	# from the controller action map.
@@ -103,7 +117,20 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	# Call the base
-	super(delta)
+	super (delta)
+
+		# Check for valid transform and menu before proceeding
+	if not is_instance_valid(palm_menu) or not is_inside_tree():
+		return
+
+	# Calculate dot product between hand's up vector and world up to detect "palm up"
+	var hand_up: bool = get_parent().transform.basis.y.dot(Vector3.UP) > palm_up_threshold
+
+	# Show or hide the palm menu based on current hand orientation
+	if hand_up and !palm_menu.visible:
+		PalmMenuManager.show_menu(is_left_hand)
+	elif not hand_up and palm_menu.visible:
+		PalmMenuManager.hide_menu(is_left_hand)
 
 	# Skip if no trackers
 	if not hand_tracker or not controller_tracker:
@@ -118,7 +145,7 @@ func _process(delta: float) -> void:
 	var hand := hand_tracker.hand
 
 	# Get the conversion transform
-	var conv_xform : Transform3D
+	var conv_xform: Transform3D
 	if hand == XRPositionalTracker.TrackerHand.TRACKER_HAND_LEFT:
 		conv_xform = _POSE_TRANSFORMS_LEFT[controller_pose_type]
 	else:
@@ -145,12 +172,12 @@ func _validate_property(property: Dictionary) -> void:
 		property.hint = PROPERTY_HINT_ENUM_SUGGESTION
 		property.hint_string = "/user/hand_pose_controller/left,/user/hand_pose_controller/right"
 	else:
-		super(property)
+		super (property)
 
 
 # Get configuration warnings
 func _get_configuration_warnings() -> PackedStringArray:
-	var warnings := super()
+	var warnings := super ()
 
 	# Verify controller tracker name is set
 	if controller_tracker_name == "":
@@ -161,7 +188,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 # Handle start of pose
-func _pose_started(p_name : String) -> void:
+func _pose_started(p_name: String) -> void:
 	# Skip if no tracker or action map
 	if not controller_tracker or not controller_action_map:
 		return
@@ -179,7 +206,7 @@ func _pose_started(p_name : String) -> void:
 
 
 # Handle end of pose
-func _pose_ended(p_name : String) -> void:
+func _pose_ended(p_name: String) -> void:
 	# Skip if no tracker or action map
 	if not controller_tracker or not controller_action_map:
 		return
@@ -197,7 +224,7 @@ func _pose_ended(p_name : String) -> void:
 
 
 # Returns an angular velocity rotated by the given basis matrix.
-static func _rotate_angular_velocity(vel : Vector3, basis : Basis) -> Vector3:
+static func _rotate_angular_velocity(vel: Vector3, basis: Basis) -> Vector3:
 	# Get the angular velocity length
 	var len := vel.length()
 	if is_zero_approx(len):

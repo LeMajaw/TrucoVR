@@ -3,4 +3,8 @@ This interface must contain:
 1 - Space for 3 cards (the max, but can be 0 as well)
 2 - A clickable via VR button write "TRUCO"
 3 - A gear icon to access the configuration (for now must trigger a print message as this screen doesn't exist)
-3 - A three lines icon (or house icon, what you think represents the Menu better in games) to access the Menu (for now must trigger a print message as this screen doesn't exist)
+4 - A three lines icon (or house icon, what you think represents the Menu better in games) to access the Menu (for now must trigger a print message as this screen doesn't exist)
+
+(I already have the components as you can see, but they are appaering huddled together and every time, even without turning the palm up)
+
+I also would like to fix the player initial height position when playing in VR, it's starting very high.
