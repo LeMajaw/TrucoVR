@@ -10,7 +10,6 @@ signal card_drawn(card: Card)
 # --- Nodes ---
 @onready var touch_area: Area3D = $TouchTrigger
 @onready var spawn_point_node: Node3D = get_node(spawn_point_path)
-@onready var dealing_cards_sound: AudioStreamPlayer3D = $DealingCardsSound
 @onready var flip_card_sound: AudioStreamPlayer3D = $FlippingCardSound
 
 # --- State ---
@@ -140,24 +139,11 @@ func _animate_card_dealing(hands: Array[Node3D], cards_per_hand: int = 3) -> voi
 		var card_slot = current_hand.get_node_or_null("CardSlot%d" % slot_index)
 
 		if card_slot:
-			# Play sound BEFORE movement
-			var sound := dealing_cards_sound.duplicate() as AudioStreamPlayer3D
-			sound.stream = dealing_cards_sound.stream
-			sound.volume_db = dealing_cards_sound.volume_db
-			get_tree().current_scene.add_child(sound)
-			await get_tree().process_frame  # wait one frame to enter the scene tree
-			sound.global_transform.origin = card.global_transform.origin
-
-			sound.play()
-
 			var tween := create_tween()
-			tween.tween_property(card, "global_transform:origin", card_slot.global_transform.origin, 0.45)\
-				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-
+			tween.tween_property(card, "global_transform:origin", card_slot.global_transform.origin, 0.45).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 			await tween.finished
+
 			card.reparent(card_slot)
-			await sound.finished
-			sound.queue_free()
 
 		await get_tree().create_timer(0.05).timeout
 		hand_index = (hand_index + 1) % hands.size()

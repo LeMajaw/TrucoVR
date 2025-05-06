@@ -48,30 +48,44 @@ func _ready():
 	GameManager.setup_round()
 
 # --- Palm Menu Logic ---
-func _process(_delta):
+func _process(_delta: float) -> void:
 	if palm_menu == null:
 		return
-		
-	var left_up := _is_hand_palm_up(left_hand)
-	var right_up := _is_hand_palm_up(right_hand)
+
+	var left_up: bool = _is_hand_palm_up(left_hand)
+	var right_up: bool = _is_hand_palm_up(right_hand)
 
 	if left_up or right_up:
-		var active_hand = right_hand if right_up else left_hand
-		palm_menu.global_transform.origin = active_hand.global_transform.origin + Vector3(0, 0.15, 0)
-		
-		var look_target = camera.global_transform.origin + Vector3(0.01, 0, 0)
-		palm_menu.look_at(look_target, Vector3.UP)
-		palm_menu.rotate_y(PI)
+		var active_hand: Node3D = right_hand if right_up else left_hand
+
+		var palm_up: Vector3 = active_hand.global_transform.basis.y.normalized()
+		var palm_pos: Vector3 = active_hand.global_transform.origin
+		palm_menu.global_transform.origin = palm_pos + palm_up * 0.15
+
+		var look_at_pos: Vector3 = camera.global_transform.origin
+		palm_menu.look_at(look_at_pos, Vector3.UP)
+
+		var palm_forward: Vector3 = active_hand.global_transform.basis.z.normalized()
+		palm_menu.rotate_object_local(Vector3.RIGHT, deg_to_rad(-15))
 
 		palm_menu.show_menu()
 	else:
 		palm_menu.hide_menu()
 
+
 func _is_hand_palm_up(hand: Node3D) -> bool:
 	if hand == null:
 		return false
-	var up_vector = hand.global_transform.basis.y.normalized()
-	return up_vector.dot(Vector3.UP) > 0.75
+
+	# Get hand "up" vector (local +Y)
+	var palm_up_vector := hand.global_transform.basis.y.normalized()
+
+	# Check angle between hand's up and world up
+	var dot := palm_up_vector.dot(Vector3.UP)
+
+	# Threshold closer to 1.0 = more strictly facing up
+	return dot > 0.85
+
 
 func _spawn_palm_menu() -> void:
 	palm_menu = palm_menu_scene.instantiate() as PalmMenu

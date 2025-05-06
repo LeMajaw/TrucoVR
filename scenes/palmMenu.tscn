@@ -10,7 +10,7 @@ albedo_color = Color(0.101961, 0.101961, 0.101961, 0.498039)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_37qpl"]
 material = SubResource("StandardMaterial3D_g4gdb")
-size = Vector2(0.2, 0.4)
+size = Vector2(0.3, 0.4)
 
 [sub_resource type="TextMesh" id="TextMesh_g4gdb"]
 text = "TRUCO!"
@@ -19,7 +19,7 @@ text = "TRUCO!"
 size = Vector3(0.04, 0.02, 0.06)
 
 [sub_resource type="TextMesh" id="TextMesh_37qpl"]
-text = "Confiiguration"
+text = "Configuration"
 
 [sub_resource type="TextMesh" id="TextMesh_2my3i"]
 text = "Menu"
@@ -29,8 +29,10 @@ mesh = SubResource("PlaneMesh_37qpl")
 script = ExtResource("1_37qpl")
 
 [node name="CardHand" parent="." instance=ExtResource("2_2my3i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0996825)
 
 [node name="TrucoButton" type="Area3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, 0.3, 0, -0.3, -1.31134e-08, 0, 0, 0.085)
 script = ExtResource("1_g4gdb")
 button = NodePath("MeshInstance3D")
 metadata/_custom_type_script = "uid://cde3r11qku5hy"
@@ -42,6 +44,7 @@ mesh = SubResource("TextMesh_g4gdb")
 shape = SubResource("BoxShape3D_g4gdb")
 
 [node name="ConfigButton" type="Area3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, -0.09, 0, 0.19)
 script = ExtResource("1_g4gdb")
 button = NodePath("MeshInstance3D")
 metadata/_custom_type_script = "uid://cde3r11qku5hy"
@@ -53,6 +56,7 @@ mesh = SubResource("TextMesh_37qpl")
 shape = SubResource("BoxShape3D_g4gdb")
 
 [node name="MenuButton" type="Area3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, 0.12, 0, 0.19)
 script = ExtResource("1_g4gdb")
 button = NodePath("MeshInstance3D")
 metadata/_custom_type_script = "uid://cde3r11qku5hy"

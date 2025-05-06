@@ -218,7 +218,6 @@ mesh = SubResource("CylinderMesh_vm5w8")
 shape = SubResource("ConcavePolygonShape3D_5qpul")
 
 [node name="Deck" parent="." instance=ExtResource("10_5it3b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="DeckSpawnPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 75.085, 0)
