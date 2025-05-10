@@ -6,7 +6,6 @@ extends Node
 ## and round setup in the current game session.
 ## Scene nodes like the deck and hands must assign themselves on scene load.
 
-
 ## 🌐 Scene references (must be assigned from Arena.gd or another scene)
 var deck: Deck
 var player_hand: Node3D
@@ -18,7 +17,7 @@ var vira_card_position: Node3D
 ## 🎮 Current game type
 var current_game: String = "truco" # Can be expanded to "poker", etc.
 
-var dealer_index: int = 0  # 0 = player, 1 = bot1, 2 = bot2, 3 = bot3, 
+var dealer_index: int = 0  # 0 = player, 1 = bot1, 2 = bot2, 3 = bot3
 
 ## 🚀 Starts a new round: builds deck, draws Vira, and deals cards
 func setup_round():
@@ -26,8 +25,10 @@ func setup_round():
 		push_error("❌ GameManager: Deck not assigned.")
 		return
 
-	await deck.start_truco_round()
+	# Reset vira reference
+	CardRanks.set_vira("")
 
+	await deck.start_truco_round()
 
 ## 🧠 Determines winner of a hand between two cards
 ## Returns: 1 = card1 wins, -1 = card2 wins, 0 = tie

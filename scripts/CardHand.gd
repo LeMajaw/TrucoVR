@@ -16,7 +16,6 @@ func set_cards(card_list: Array[Node3D]):
 	cards = card_list
 	_update_slots()
 
-
 ## Rearrange cards visually in the slots
 func _update_slots():
 	var card_count := cards.size()
@@ -38,7 +37,7 @@ func _update_slots():
 
 		var card := cards[i]
 		if is_instance_valid(card):
-			card.global_transform.origin = card_slots[i].global_transform.origin
+			card.global_transform = card_slots[i].global_transform
 
 			# Ensure grab signal is connected
 			if not card.card_grabbed.is_connected(_on_card_grabbed):
@@ -48,6 +47,9 @@ func _update_slots():
 			if not is_instance_valid(card.get_parent()) or card.get_parent() != self:
 				add_child(card)
 
+			# Optional freeze after positioning (prevents jitter if physics-enabled)
+			if card.has_method("freeze"):
+				card.freeze = true
 
 ## When a card is picked from hand
 func _on_card_grabbed(card: Node3D):

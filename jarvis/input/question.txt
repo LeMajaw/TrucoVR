@@ -5,6 +5,6 @@ This interface must contain:
 3 - A gear icon to access the configuration (for now must trigger a print message as this screen doesn't exist)
 4 - A three lines icon (or house icon, what you think represents the Menu better in games) to access the Menu (for now must trigger a print message as this screen doesn't exist)
 
-(I already have the components as you can see, but they are appaering huddled together and every time, even without turning the palm up)
+(I already have the components as you can see, but they are appearing when I turn my wrist 90 degrees in relation to my arm (more or less), I want to make it related to the palm up, anything related to the wrist)
 
-I also would like to fix the player initial height position when playing in VR, it's starting very high.
+I also would like to fix the player initial position in VR, it's appearing back to the chair2, not sitting chair1 where it should be.

@@ -109,13 +109,9 @@ func draw_card() -> Card:
 	var card: Card = deck.pop_back()
 	card.visible = true
 
-	var holder := RigidBody3D.new()
-	holder.name = "DrawnCard"
-	get_tree().current_scene.add_child(holder)
-
-	card.reparent(holder)
-	card.transform = Transform3D.IDENTITY
-	holder.global_transform = spawn_point_node.global_transform.translated(Vector3(0, 0.05, 0))
+	# Set position slightly above deck (but directly, without RigidBody3D holder)
+	card.reparent(get_tree().current_scene)
+	card.global_transform = spawn_point_node.global_transform.translated(Vector3(0, 0.05, 0))
 
 	emit_signal("card_drawn", card)
 	return card
@@ -131,7 +127,7 @@ func _animate_card_dealing(hands: Array[Node3D], cards_per_hand: int = 3) -> voi
 
 		var card = deck.pop_back()
 		card.visible = true
-		card.reparent(get_tree().current_scene)
+		add_child(card)
 		card.global_transform = spawn_point_node.global_transform
 
 		var current_hand = hands[hand_index]
@@ -144,6 +140,7 @@ func _animate_card_dealing(hands: Array[Node3D], cards_per_hand: int = 3) -> voi
 			await tween.finished
 
 			card.reparent(card_slot)
+			card.transform = Transform3D.IDENTITY
 
 		await get_tree().create_timer(0.05).timeout
 		hand_index = (hand_index + 1) % hands.size()
@@ -165,17 +162,18 @@ func _reveal_vira() -> void:
 
 	vira_card.set_card(vira_card.card_name, true)
 	vira_card.show_back()
-	vira_card.global_transform = spawn_point_node.global_transform.translated(Vector3(0, 0.1, 0))
-	vira_card.rotation_degrees.y = 180
+
+	# Place beneath the deck visually, upright
+	vira_card.reparent(self)
+	vira_card.transform.origin = Vector3(0, -0.01, 0)
+	vira_card.rotation_degrees = Vector3(90, 0, 0)
+	if vira_card.has_method("freeze"):
+		vira_card.freeze = true
 
 	if flip_card_sound:
 		flip_card_sound.play()
 
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(vira_card, "rotation_degrees:y", 0, 0.5)
-	await tween.finished
-
-	vira_card.show_front()
 	CardRanks.set_vira(vira_card.card_name)
+
 	print("🃏 Vira is:", vira_card.card_name)
+	print("📍 Vira position:", vira_card.global_transform.origin)
