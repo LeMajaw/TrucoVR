@@ -68,9 +68,6 @@ const _POSE_TRANSFORMS_RIGHT: Array[Transform3D] = [
 ## Hand poses generating boolean values
 @export var controller_action_map: HandPoseActionMap
 
-## Reference to the PalmMenu node, assumed to be a sibling of this controller.
-@onready var palm_menu := $"../PalmMenu"
-
 ## Whether this hand is the left hand (true) or right hand (false)
 @export var is_left_hand: bool = true
 
@@ -91,11 +88,6 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		set_process(false)
 		return
-	else:
-		# Hide the menu initially and register this hand's menu in the global manager.
-		palm_menu.visible = false
-		PalmMenuManager.register_menu(is_left_hand, palm_menu)
-
 
 	# If the hand-pose-set is not specified then construct one dynamically
 	# from the controller action map.
@@ -118,19 +110,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# Call the base
 	super (delta)
-
-		# Check for valid transform and menu before proceeding
-	if not is_instance_valid(palm_menu) or not is_inside_tree():
-		return
-
-	# Calculate dot product between hand's up vector and world up to detect "palm up"
-	var hand_up: bool = get_parent().transform.basis.y.dot(Vector3.UP) > palm_up_threshold
-
-	# Show or hide the palm menu based on current hand orientation
-	if hand_up and !palm_menu.visible:
-		PalmMenuManager.show_menu(is_left_hand)
-	elif not hand_up and palm_menu.visible:
-		PalmMenuManager.hide_menu(is_left_hand)
 
 	# Skip if no trackers
 	if not hand_tracker or not controller_tracker:

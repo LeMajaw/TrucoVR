@@ -18,19 +18,6 @@ func _ready() -> void:
 	PalmMenuManager.register_menu(is_left_hand, self)
 	hand_pose_controller = get_node_or_null(hand_pose_controller_path)
 
-func _process(_delta: float) -> void:
-	if not hand_pose_controller:
-		return
-
-	var transform_hand_pose: Transform3D = hand_pose_controller.get_hand_pose_transform(0)
-	var palm_normal: Vector3 = -transform_hand_pose.basis.z.normalized()
-	var dot_up: float = palm_normal.dot(Vector3.UP)
-
-	if dot_up > show_threshold:
-		PalmMenuManager.show_menu(is_left_hand)
-	else:
-		PalmMenuManager.hide_menu(is_left_hand)
-
 func show_menu():
 	visible = true
 
@@ -40,8 +27,6 @@ func hide_menu():
 func set_cards(cards: Array[Node3D]):
 	if card_hand:
 		card_hand.set_cards(cards)
-
-		# Ensure cards are positioned again immediately
 		if "_update_slots" in card_hand:
 			card_hand.call("_update_slots")
 

@@ -5,12 +5,17 @@ class_name Arena
 var bot_scene: PackedScene = preload("res://scenes/bot.tscn")
 var palm_menu_scene: PackedScene = preload("res://scenes/palmMenu.tscn")
 var deck_scene: PackedScene = preload("res://scenes/deck.tscn")
+var player_scene: PackedScene = preload("res://scenes/player.tscn")
 
 # Instances
+var player_instance: XROrigin3D
 var left_palm_menu: PalmMenu
 var right_palm_menu: PalmMenu
 var deck_instance: Deck
 var chairs: Array[Chair] = []
+
+enum HandOwner { NONE = -1, LEFT = 0, RIGHT = 1 }
+var current_menu_owner: HandOwner = HandOwner.NONE
 
 # Nodes
 @onready var table_node: Node3D = $Table
@@ -34,72 +39,112 @@ func _ready():
 	await get_tree().process_frame
 	await get_tree().create_timer(0.2).timeout
 
-	_seat_player(player)
+	_spawn_player()
 	_spawn_palm_menus()
 	_spawn_deck()
 	_seat_bots()
 
-	# Assign player and bot hands to GameManager (for dealing)
-	GameManager.player_hand = $Chairs/Chair1/Player/PalmMenu/CardHand
+	GameManager.player_hand = left_palm_menu.get_node("CardHand")
 	GameManager.bot1_hand = $Chairs/Chair2/Bot1/CardHand
 	GameManager.bot2_hand = $Chairs/Chair3/Bot2/CardHand
 	GameManager.bot3_hand = $Chairs/Chair4/Bot3/CardHand
 
-	# ✅ Start the round!
 	GameManager.setup_round()
 
 # --- Palm Menu Logic ---
 func _process(_delta: float) -> void:
-	if left_palm_menu and _is_hand_palm_up(left_hand):
-		_update_palm_menu_position(left_palm_menu, left_hand)
-		PalmMenuManager.show_menu(true)
-	elif right_palm_menu and _is_hand_palm_up(right_hand):
-		_update_palm_menu_position(right_palm_menu, right_hand)
-		PalmMenuManager.show_menu(false)
-	else:
-		PalmMenuManager.hide_menu(true)
-		PalmMenuManager.hide_menu(false)
+	var left_up := _is_palm_up(left_hand)
+	var right_up := _is_palm_up(right_hand)
 
-func _is_hand_palm_up(hand: Node3D) -> bool:
+	match current_menu_owner:
+		HandOwner.NONE:
+			if left_up:
+				current_menu_owner = HandOwner.LEFT
+			elif right_up:
+				current_menu_owner = HandOwner.RIGHT
+
+		HandOwner.LEFT:
+			if left_up:
+				_check_hand_orientation(left_hand, left_palm_menu, true)
+			else:
+				PalmMenuManager.hide_menu(true)
+				current_menu_owner = HandOwner.NONE
+
+		HandOwner.RIGHT:
+			if right_up:
+				_check_hand_orientation(right_hand, right_palm_menu, false)
+			else:
+				PalmMenuManager.hide_menu(false)
+				current_menu_owner = HandOwner.NONE
+
+
+func _is_palm_up(hand: Node3D) -> bool:
 	if hand == null:
 		return false
-	var palm_up_vector := hand.global_transform.basis.y.normalized()
-	return palm_up_vector.dot(Vector3.UP) > 0.85
+	var palm_normal = hand.global_transform.basis.z.normalized()
+	return palm_normal.dot(Vector3.UP) > 0.85
+	
 
-func _update_palm_menu_position(menu: PalmMenu, hand: Node3D) -> void:
-	var palm_up := hand.global_transform.basis.y.normalized()
-	var palm_pos := hand.global_transform.origin
-	menu.global_transform.origin = palm_pos + palm_up * 0.15
+func _check_hand_orientation(hand: Node3D, menu: PalmMenu, is_left: bool) -> void:
+	if hand == null or menu == null:
+		return
 
-	var look_at_pos := camera.global_transform.origin
-	menu.look_at(look_at_pos, Vector3.UP)
-	menu.rotate_object_local(Vector3.RIGHT, deg_to_rad(-15))
+	var palm_normal = hand.global_transform.basis.z.normalized()
+	var dot_up = palm_normal.dot(Vector3.UP)
+
+	if dot_up > 0.85:
+		# Position the menu above the palm
+		menu.global_transform.origin = hand.global_transform.origin + palm_normal * 0.15
+
+		# Rotate so it's vertical and facing the camera
+		var up = palm_normal
+		var forward = (camera.global_transform.origin - menu.global_transform.origin).normalized()
+		var right = up.cross(forward).normalized()
+		forward = right.cross(up).normalized()
+
+		# menu.global_transform.basis = Basis(right, up, forward)
+		menu.global_transform = Transform3D(Basis(right, up, forward), hand.global_transform.origin + palm_normal * 0.25)
+		menu.rotate_object_local(Vector3.RIGHT, deg_to_rad(90))  # adjust angle as needed
+		
+		PalmMenuManager.show_menu(is_left)
+	else:
+		PalmMenuManager.hide_menu(is_left)
+
 
 func _spawn_palm_menus() -> void:
 	left_palm_menu = palm_menu_scene.instantiate() as PalmMenu
 	left_palm_menu.is_left_hand = true
-	player.add_child(left_palm_menu)
+	get_tree().current_scene.add_child(left_palm_menu)
 
 	right_palm_menu = palm_menu_scene.instantiate() as PalmMenu
 	right_palm_menu.is_left_hand = false
-	player.add_child(right_palm_menu)
+	get_tree().current_scene.add_child(right_palm_menu)
+
 
 # --- Player Seating ---
-func _seat_player(player_node: Node3D) -> void:
-	if not is_instance_valid(player_node):
-		push_error("Player not found.")
+func _spawn_player() -> void:
+	if not player_scene:
+		push_error("Player scene not assigned.")
 		return
 
-	if player_chair.has_method("seat_player"):
-		player_chair.seat_player(player_node)
+	# Instance player
+	player_instance = player_scene.instantiate() as XROrigin3D
+	get_tree().current_scene.add_child(player_instance)
 
-		# Force XR Origin absolute position for VR
-		var xr_origin := player_node.get_node("XROrigin3D")
-		if xr_origin:
-			xr_origin.global_transform.origin = player_chair.global_transform.origin + Vector3(0, 0.85, 0)
-			xr_origin.global_transform.basis = player_chair.global_transform.basis
-	else:
-		push_error("Chair1 missing seat_player()")
+	# Align to chair with offset
+	var chair_pos := player_chair.global_transform.origin
+	var chair_fwd := player_chair.global_transform.basis.z.normalized()
+	var spawn_pos := chair_pos + Vector3(0, 0.5, 0)
+	var look_at := table_node.global_transform.origin
+	look_at.y = spawn_pos.y
+
+	var basis := Transform3D().looking_at(look_at - spawn_pos, Vector3.UP).basis
+
+	player_instance.global_transform = Transform3D(basis, spawn_pos)
+
+	# Optional recenter
+	XRServer.center_on_hmd(2, true)
+
 
 # --- Deck Spawn ---
 func _spawn_deck() -> void:
@@ -113,20 +158,14 @@ func _spawn_deck() -> void:
 		return
 
 	deck_instance = deck_scene.instantiate() as Deck
-
-	# Add to root scene to avoid inheriting table's scale
 	get_tree().current_scene.add_child(deck_instance)
 	deck_instance.global_transform = deck_spawn.global_transform.translated(Vector3.UP * 0.01)
-	deck_instance.scale = Vector3.ONE # Just in case
-
-	# Setup deck
+	deck_instance.scale = Vector3.ONE
 	deck_instance.spawn_point_node = deck_spawn
 	deck_instance.setup_deck()
 
-	# 💡 Register deck reference in GameManager
 	GameManager.deck = deck_instance
 
-	# Also set Vira marker if you have one
 	var vira_marker = table_node.get_node_or_null("ViraMarker")
 	if vira_marker:
 		GameManager.vira_card_position = vira_marker
@@ -159,7 +198,7 @@ func _adjust_bot(bot: Bot, chair: Chair) -> void:
 		return
 
 	chair.seat_player(bot)
-	bot.translate(Vector3(0, 1.2, 0))
+	bot.translate(Vector3(0, 1.1, 0))
 	bot.scale = Vector3(0.35, 0.35, 0.35)
 
 	print("🤖", bot.name, "seated at", chair.name)
@@ -177,7 +216,7 @@ func place_card_in_hand(card: Node3D, card_hand: Node3D, slot_index: int):
 # --- Vira Placement ---
 func place_vira_card(vira_card: Node3D, deck_node: Node3D):
 	vira_card.reparent(deck_node)
-	vira_card.transform.origin = Vector3(0, -0.01, 0)  # adjust based on your card thickness
+	vira_card.transform.origin = Vector3(0, -0.01, 0)
 	vira_card.rotation_degrees = Vector3(90, 0, 0)
 	if vira_card.has_method("freeze"):
 		vira_card.freeze = true

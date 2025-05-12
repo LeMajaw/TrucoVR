@@ -3,9 +3,9 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://v0hluaar32kd"
-path.s3tc="res://.godot/imported/pokertable_round_6.png-d2f32739ce951e28ada2d3e114c491d2.s3tc.ctex"
+path.etc2="res://.godot/imported/pokertable_round_6.png-d2f32739ce951e28ada2d3e114c491d2.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/poker_table/pokertable_round_6.png"
-dest_files=["res://.godot/imported/pokertable_round_6.png-d2f32739ce951e28ada2d3e114c491d2.s3tc.ctex"]
+dest_files=["res://.godot/imported/pokertable_round_6.png-d2f32739ce951e28ada2d3e114c491d2.etc2.ctex"]
 
 [params]
 

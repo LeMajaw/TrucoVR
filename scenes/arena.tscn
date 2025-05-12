@@ -1,7 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://c44gxaitg88s8"]
+[gd_scene load_steps=17 format=3 uid="uid://c44gxaitg88s8"]
 
 [ext_resource type="Script" uid="uid://cpysmww28ym6w" path="res://scripts/arena.gd" id="1_xdvfk"]
-[ext_resource type="PackedScene" uid="uid://dvklmuafs5xs6" path="res://scenes/player.tscn" id="2_7ft05"]
 [ext_resource type="PackedScene" uid="uid://33ne0e6hpwbu" path="res://scenes/table.tscn" id="3_4ag8t"]
 [ext_resource type="PackedScene" uid="uid://bw32k40cupas" path="res://scenes/chair.tscn" id="4_ahd73"]
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="5_7ft05"]
@@ -50,9 +49,6 @@ transform = Transform3D(0.01, 0, 0, 0, 0.012, 0, 0, 0, 0.01, 0, 0.03, 0)
 
 [node name="Chair1" parent="Chairs" instance=ExtResource("4_ahd73")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 1)
-
-[node name="Player" parent="Chairs/Chair1" instance=ExtResource("2_7ft05")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
 [node name="Chair2" parent="Chairs" instance=ExtResource("4_ahd73")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1, 0, 0)
