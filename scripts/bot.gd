@@ -38,7 +38,7 @@ func _ready() -> void:
 	# Don’t call _apply_bot_appearance() here — let the Arena decide when
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	_pulse_led()
 
 func apply_bot_appearance() -> void:

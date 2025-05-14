@@ -74,6 +74,7 @@ func setup_deck():
 
 			var card: Card = CARD_SCENE.instantiate()
 			card.set_card(id, false)
+			card.card_name = id
 			card.show_back()
 			card.visible = false
 			add_child(card)
@@ -81,6 +82,9 @@ func setup_deck():
 
 	_shuffle_deck()
 	_position_cards()
+
+	for c in deck:
+		print("🧩 Card in deck:", c.card_name)
 
 func _shuffle_deck():
 	deck.shuffle()
@@ -107,9 +111,8 @@ func draw_card() -> Card:
 		return null
 
 	var card: Card = deck.pop_back()
+	card.set_card(card.card_name, false)
 	card.visible = true
-
-	# Set position slightly above deck (but directly, without RigidBody3D holder)
 	card.reparent(get_tree().current_scene)
 	card.global_transform = spawn_point_node.global_transform.translated(Vector3(0, 0.05, 0))
 
@@ -127,7 +130,6 @@ func _animate_card_dealing(hands: Array[Node3D], cards_per_hand: int = 3) -> voi
 
 		var card = deck.pop_back()
 		card.visible = true
-		add_child(card)
 		card.global_transform = spawn_point_node.global_transform
 
 		var current_hand = hands[hand_index]
@@ -154,26 +156,58 @@ func _animate_card_dealing(hands: Array[Node3D], cards_per_hand: int = 3) -> voi
 		if "set_cards" in hand:
 			hand.call("set_cards", cards)
 
-# --- Reveal vira with flip animation ---
+# --- Reveal vira with flip and slide ---
 func _reveal_vira() -> void:
 	vira_card = draw_card()
 	if not vira_card:
+		push_error("❌ Failed to draw vira card")
 		return
 
+	# Set card face and update textures
 	vira_card.set_card(vira_card.card_name, true)
-	vira_card.show_back()
+	vira_card._update_textures()
+	vira_card.visible = true
+	vira_card.scale = Vector3.ONE
+	vira_card.rotation_degrees = Vector3.ZERO
 
-	# Place beneath the deck visually, upright
-	vira_card.reparent(self)
-	vira_card.transform.origin = Vector3(0, -0.01, 0)
-	vira_card.rotation_degrees = Vector3(90, 0, 0)
-	if vira_card.has_method("freeze"):
-		vira_card.freeze = true
+	# Disable physics/grab logic if applicable
+	if vira_card.has_node("XRToolsPickable"):
+		vira_card.get_node("XRToolsPickable").set_physics_process(false)
+
+	# Calculate the desired global transform
+	var deck_global_transform = global_transform
+	var deck_height = deck.size() * 0.005 + 0.02
+	var vira_global_position = deck_global_transform.origin + Vector3(0.06, deck_height * 0.5 - 0.01, 0)
+
+	var vira_basis = Basis()
+	vira_basis = vira_basis.rotated(Vector3(1, 0, 0), deg_to_rad(90)) # Lay flat
+	vira_basis = vira_basis.rotated(Vector3(0, 1, 0), deg_to_rad(90)) # Rotate toward player
+
+	var vira_global_transform = Transform3D(vira_basis, vira_global_position)
+
+	# Set the global transform before reparenting
+	vira_card.global_transform = vira_global_transform
+
+	# Reparent the card to the deck, preserving the global transform
+	vira_card.reparent(self, true)
+
+	# Ensure correct visual side
+	var front = vira_card.get_node_or_null("XRToolsPickable/CardBody/Front")
+	var back = vira_card.get_node_or_null("XRToolsPickable/CardBody/Back")
+	if front:
+		front.visible = true
+	if back:
+		back.visible = false
 
 	if flip_card_sound:
 		flip_card_sound.play()
 
-	CardRanks.set_vira(vira_card.card_name)
+	if vira_card.has_method("freeze"):
+		vira_card.freeze = true
 
-	print("🃏 Vira is:", vira_card.card_name)
-	print("📍 Vira position:", vira_card.global_transform.origin)
+	print("🃏 Vira card name:", vira_card.card_name)
+	print("📍 Vira global position:", vira_card.global_transform.origin)
+	print("📍 Deck global position:", deck_global_transform.origin)
+	print("📦 Deck height estimate:", deck_height)
+
+	CardRanks.set_vira(vira_card.card_name)

@@ -3,16 +3,16 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://wow1iinvlufa"
-path.etc2="res://.godot/imported/criminalMaleA.png-e04d1dbc5eaa9a0f2c3c430602a715d7.etc2.ctex"
+path.s3tc="res://.godot/imported/criminalMaleA.png-e04d1dbc5eaa9a0f2c3c430602a715d7.s3tc.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/characters/Skins/criminalMaleA.png"
-dest_files=["res://.godot/imported/criminalMaleA.png-e04d1dbc5eaa9a0f2c3c430602a715d7.etc2.ctex"]
+dest_files=["res://.godot/imported/criminalMaleA.png-e04d1dbc5eaa9a0f2c3c430602a715d7.s3tc.ctex"]
 
 [params]
 

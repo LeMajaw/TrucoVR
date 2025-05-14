@@ -14,19 +14,19 @@ var right_palm_menu: PalmMenu
 var deck_instance: Deck
 var chairs: Array[Chair] = []
 
-enum HandOwner { NONE = -1, LEFT = 0, RIGHT = 1 }
+enum HandOwner {NONE = -1, LEFT = 0, RIGHT = 1}
 var current_menu_owner: HandOwner = HandOwner.NONE
 
 # Nodes
 @onready var table_node: Node3D = $Table
 @onready var player_chair: Chair = $Chairs/Chair1
-@onready var player: Node3D = $Chairs/Chair1/Player
-@onready var left_hand: Node3D = $Chairs/Chair1/Player/LeftTrackedHand
-@onready var right_hand: Node3D = $Chairs/Chair1/Player/RightTrackedHand
-@onready var camera: Camera3D = $Chairs/Chair1/Player/XRCamera3D
 @onready var bot1: Node3D = $Chairs/Chair2/Bot1
 @onready var bot2: Node3D = $Chairs/Chair3/Bot2
 @onready var bot3: Node3D = $Chairs/Chair4/Bot3
+@onready var left_hand: Node3D = null
+@onready var right_hand: Node3D = null
+@onready var camera: Camera3D = null
+
 
 func _ready():
 	chairs = [
@@ -83,7 +83,7 @@ func _is_palm_up(hand: Node3D) -> bool:
 		return false
 	var palm_normal = hand.global_transform.basis.z.normalized()
 	return palm_normal.dot(Vector3.UP) > 0.85
-	
+
 
 func _check_hand_orientation(hand: Node3D, menu: PalmMenu, is_left: bool) -> void:
 	if hand == null or menu == null:
@@ -102,10 +102,9 @@ func _check_hand_orientation(hand: Node3D, menu: PalmMenu, is_left: bool) -> voi
 		var right = up.cross(forward).normalized()
 		forward = right.cross(up).normalized()
 
-		# menu.global_transform.basis = Basis(right, up, forward)
 		menu.global_transform = Transform3D(Basis(right, up, forward), hand.global_transform.origin + palm_normal * 0.25)
-		menu.rotate_object_local(Vector3.RIGHT, deg_to_rad(90))  # adjust angle as needed
-		
+		menu.rotate_object_local(Vector3.RIGHT, deg_to_rad(90))
+
 		PalmMenuManager.show_menu(is_left)
 	else:
 		PalmMenuManager.hide_menu(is_left)
@@ -133,17 +132,21 @@ func _spawn_player() -> void:
 
 	# Align to chair with offset
 	var chair_pos := player_chair.global_transform.origin
-	var chair_fwd := player_chair.global_transform.basis.z.normalized()
-	var spawn_pos := chair_pos + Vector3(0, 0.5, 0)
-	var look_at := table_node.global_transform.origin
-	look_at.y = spawn_pos.y
+	var spawn_pos := chair_pos + Vector3(0, 0, 0)
+	var _look_at := table_node.global_transform.origin
+	_look_at.y = spawn_pos.y
 
-	var basis := Transform3D().looking_at(look_at - spawn_pos, Vector3.UP).basis
+	var _basis := Transform3D().looking_at(_look_at - spawn_pos, Vector3.UP).basis
 
-	player_instance.global_transform = Transform3D(basis, spawn_pos)
+	player_instance.global_transform = Transform3D(_basis, spawn_pos)
 
-	# Optional recenter
-	XRServer.center_on_hmd(2, true)
+	# 🟩 Save table position for use in Player recenter logic
+	if player_instance is Player:
+		player_instance.table_position = table_node.global_transform.origin
+	
+	left_hand = player_instance.get_node("LeftTrackedHand")
+	right_hand = player_instance.get_node("RightTrackedHand")
+	camera = player_instance.get_node("XRCamera3D")
 
 
 # --- Deck Spawn ---

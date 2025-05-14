@@ -26,13 +26,14 @@ func _ready() -> void:
 		if front_material == null:
 			front_material = StandardMaterial3D.new()
 			front_mesh.material_override = front_material
+		front_material.albedo_texture = null
 
 	if back_mesh:
 		back_material = back_mesh.material_override
 		if back_material == null:
 			back_material = StandardMaterial3D.new()
 			back_mesh.material_override = back_material
-
+		back_material.albedo_texture = null
 
 	_update_textures()
 
@@ -57,9 +58,13 @@ func _update_textures() -> void:
 		var path = TEXTURE_PATH + card_name + ".jpg"
 		print("🧩 Loading card texture:", path)
 		if ResourceLoader.exists(path):
-			front_material.albedo_texture = load(path)
+			var tex = load(path)
+			if tex:
+				front_material.albedo_texture = tex
+			else:
+				push_warning("⚠️ Failed to load texture: " + path)
 		else:
-			push_warning("⚠️ Texture not found for card: " + card_name)
+			push_warning("⚠️ Texture path does not exist: " + path)
 
 	if back_material:
 		back_material.albedo_texture = BACK_TEXTURE
@@ -69,11 +74,6 @@ func _update_textures() -> void:
 
 	if back_mesh:
 		back_mesh.visible = not is_face_up
-
-	# 🔧 Ensure visibility updates correctly even after transform/basis change
-	if is_inside_tree():
-		if front_mesh: front_mesh.visible = is_face_up
-		if back_mesh: back_mesh.visible = not is_face_up
 
 
 # Game logic

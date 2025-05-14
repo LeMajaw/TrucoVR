@@ -8,10 +8,14 @@ var manilha_values: Array[String] = []
 var vira_value: String = ""
 
 func set_vira(vira_card: String):
+	if vira_card.length() <= 1:
+		push_warning("🟠 Invalid vira_card format: %s" % vira_card)
+		return
+
 	vira_value = vira_card.substr(1)
 	var index = TRUCO_ORDER.find(vira_value)
 	if index == -1:
-		push_warning("Unknown vira value: %s" % vira_value)
+		push_warning("🔴 Unknown vira value: %s (from %s)" % [vira_value, vira_card])
 		return
 
 	var next_index = (index + 1) % TRUCO_ORDER.size()
@@ -20,6 +24,8 @@ func set_vira(vira_card: String):
 
 	for suit in ["s", "h", "d", "c"]:
 		manilha_values.append("%s%s" % [suit, manilha_value])
+
+	print("🔎 Manilhas:", CardRanks.manilha_values)
 
 func is_manilha(card_id: String) -> bool:
 	return card_id in manilha_values

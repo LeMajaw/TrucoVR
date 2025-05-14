@@ -14,16 +14,10 @@ You are acting as a senior professional developer. Focus on finding the direct a
 ------------------------------------------------------------
 
 🤔 Question:
-Can you help me to create an interface as this one on the image that appears when the player turns their hand (any of them) to the top?
-This interface must contain:
-1 - Space for 3 cards (the max, but can be 0 as well)
-2 - A clickable via VR button write "TRUCO"
-3 - A gear icon to access the configuration (for now must trigger a print message as this screen doesn't exist)
-4 - A three lines icon (or house icon, what you think represents the Menu better in games) to access the Menu (for now must trigger a print message as this screen doesn't exist)
-
-(I already have the components as you can see, but they are appearing when I turn my wrist 90 degrees in relation to my arm (more or less), I want to make it related to the palm up, anything related to the wrist)
-
-I also would like to fix the player initial position in VR, it's appearing back to the chair2, not sitting chair1 where it should be.
+The player is sat at the chair1 as it should be, but for some reason, the direction of it depends the direction of my real body at the real world.
+Can we set the player fixed at the chair1 1 and facing the table always?
+And can we make the meta button centralize back the player to the center of the chair1 and facing the table too?
+(At this moment the meta button shows its animation but does anything)
 
 📁 Project Structure:
 - - .editorconfig
@@ -259,6 +253,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\17\ed501abca85069e5e372e051bfbdf6d8bc20a4
 - - .git\objects\18\044a11c732c1ca509bdb918f758ca1d6da287e
 - - .git\objects\18\1205ed647eed57ff4d49cb45bda9f2b7ef2cf4
+- - .git\objects\18\3b3e0077285471d03f74f48a69a9b1d8932934
 - - .git\objects\18\7612eb88650c1c94f1b67c3b02392ca626dd71
 - - .git\objects\18\c92492deefe9868cd5a656ee26d506c1a63264
 - - .git\objects\19\0be62619b7c2e159a9702006c6a52492d130bd
@@ -285,6 +280,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\1c\472144322c041b98ffa3e85235e5277790cf0c
 - - .git\objects\1c\65ab89e9c6b287dec92e72b429ebed6c47d0f7
 - - .git\objects\1c\7c92eaa7d643e551691285d359e422005d39b1
+- - .git\objects\1c\870a6ec60f73676755c7a70dbf78467745f8b5
 - - .git\objects\1c\952991515fef533b49f4492be4da08693e9abd
 - - .git\objects\1c\96ff499ec83b062b465b8efc9fbca32e51a442
 - - .git\objects\1c\bef9b64d47fe3393abb88e1493981e418f97a4
@@ -405,6 +401,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\2c\bb6b78ff615fc9af78f58601d5c1bf934e3712
 - - .git\objects\2c\ec3f5dcf0a7b584e8e75eecf01b7930311232d
 - - .git\objects\2d\017c9a6b22a95efae96c9fa6db20f8ff022cb2
+- - .git\objects\2d\3e520c05955321104640c01be38efcca0c7456
 - - .git\objects\2d\6c17cc7dbd3dc902c59d4a7e40b57af4d3e400
 - - .git\objects\2d\7717b50a8afb9e808739a90e5eda4c337100df
 - - .git\objects\2d\7f5997186138df232473b84c12872d46ba69bb
@@ -442,6 +439,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\32\689c0e356ffbb0ae68751b09ee6984ed0e4ba3
 - - .git\objects\32\6bd9b40ce71f65ac799a578b59e63462c6f2fd
 - - .git\objects\32\998d63864411cfe6a617feb0a56a58fd6f0594
+- - .git\objects\32\b8d5514314d508068f5e33649d53bedda8c925
 - - .git\objects\32\ba0843c84dc349db8de92ab36bd54a69aaf95c
 - - .git\objects\32\eb85e12a3dc33aad9ba40148db8a88e7b974f6
 - - .git\objects\33\4f47ccc2e60cd4a6ed37a4dfb252154cc0eee4
@@ -540,6 +538,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\3d\d8d01b5165dcb931e76a8a828207d706c95a01
 - - .git\objects\3d\e26e67c09130508feca49f87ea507b058149a0
 - - .git\objects\3e\2fa08ef69212628c565967609ca40602773f9d
+- - .git\objects\3e\5916d0c29659ca7a8e03ee98fb078b68ad5c56
 - - .git\objects\3e\a8c3312c66cd12d0059be2d963d978e30dd042
 - - .git\objects\3e\da7eef9625fcd01748fe95ffa7f571404429e7
 - - .git\objects\3f\27a88e5b3438495aeb997911b1768e7e0b2a74
@@ -941,6 +940,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\70\8cbc974c95339a9ae742248b8f195f49a9f017
 - - .git\objects\70\9b9473e489f1d980b255bb738781eae9af7d28
 - - .git\objects\70\c5bd8498e5550cb384b2bc847adcd34b4c2d1a
+- - .git\objects\70\c6058930eebe8dbed4ce127809c8bf7b5d1fd1
 - - .git\objects\70\dcdc543b03b4d4058e48f26489841b8d7b8c50
 - - .git\objects\70\ec25e93f847153f7cca1832ed12c6b806280cd
 - - .git\objects\70\eec67898581d4a8f1b24921f6c979481ae80d7
@@ -950,6 +950,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\71\5ea8ad5991004bbdeceb78579f214c817990e2
 - - .git\objects\71\6b380719be51e45643d8d3a14e7e3fb202b891
 - - .git\objects\71\7da0fbe7ee6b8b1ddc62b9a5768dd83a13f32d
+- - .git\objects\71\ff3c7b37ac812511cfec02d8f8ebc1b88c4d60
 - - .git\objects\72\0d48299226d4085419058c4923b6bdd3a22443
 - - .git\objects\72\26e02b56b9b367ede9e752a420f3ab238cbb54
 - - .git\objects\72\5791b69ab3f9088c640f61caadb415516abc55
@@ -1017,6 +1018,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\7a\06ee4d7782912b5592cf899fb50d95dcbcaf90
 - - .git\objects\7a\185d66707e37700b0beb3f68d6effcc0421acb
 - - .git\objects\7a\4956fbe7e6ecce2f927d7122eb1216fbb4eb3a
+- - .git\objects\7a\5b33f17a78039cb5a7140de2354a55f4ea6b4a
 - - .git\objects\7a\7aa1ea44dad73e9ea2da0ed48041dcd2720adc
 - - .git\objects\7a\bd3861485860d1cc3360172816a8877803aa4d
 - - .git\objects\7a\d0a5fe77fe730303ff11b49c49ff3664b8c75e
@@ -1137,6 +1139,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\8b\a8546e64dd07be38b4292e481111455d16f174
 - - .git\objects\8b\ff0fcc982f05f5f84aba1c546976077b748c04
 - - .git\objects\8c\11545ebfaa2e398ff56c314b8991d521c1dac0
+- - .git\objects\8c\1b75c68fa8664a8679b47607e4559f59fcde6f
 - - .git\objects\8c\1cd390134062d161d162c67bdc6fd45084f1f5
 - - .git\objects\8c\34365f20d82ed54dca9ef86d7cf0b63dacfa92
 - - .git\objects\8c\51ec0eafd87d772a028814bc4dbc863f23dbfd
@@ -1222,6 +1225,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\96\eac313d73fe29e488b99a6cb0b5ee63450f0a0
 - - .git\objects\97\29c296e09f8ffd3c516805057eae08c1251e03
 - - .git\objects\97\e609e407ac6b0dfb6b53a2f60d79c5d6ed5664
+- - .git\objects\97\e7f056d43764b7044b72352871f8c4bc2fb82e
 - - .git\objects\98\012df05542f49fd83efb98ce8e6ec0f2bc6036
 - - .git\objects\98\1f7a0f5731b7df044069cb385ccef7a8a594da
 - - .git\objects\98\2846c1788ecb1ff63ce56b682ecc4366df03c3
@@ -1372,6 +1376,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\ac\2acd596645a724580675c1f7880fed7ed9cf86
 - - .git\objects\ac\e1dd91482e646a66ec34a7e8efcb06dfae3956
 - - .git\objects\ac\e78c6db3f243465e659fb737c123f13a12340a
+- - .git\objects\ad\09808dd0043161215b01be45d79f057468c850
 - - .git\objects\ad\2df88212032d19f89d9f8ee5e9ef95ee16f1e1
 - - .git\objects\ad\c3bcb8cca0e0c7eb3cc0ca5d44f512ddf031a2
 - - .git\objects\ad\c9676ccb46c2614747fb78567004b7f88f15aa
@@ -1461,6 +1466,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\b9\4023c1c37a300b89a15ffce23a8801aa28e81c
 - - .git\objects\b9\5a0759b5a875eef34a8e28fbd04cb53d608f13
 - - .git\objects\b9\72de1ee95f39fef9bcc1c1600c81b9aef24210
+- - .git\objects\b9\a2d05dd80e9a78f88564b922ed9bbbadfbfe9e
 - - .git\objects\b9\a8881656906f04c5d20071e29b37246672ceeb
 - - .git\objects\b9\bb78ad6031faa5287ba56dfed9d52dd4b987f2
 - - .git\objects\b9\c106079fa372a8b37d73c144dd8a85590c0e39
@@ -1527,6 +1533,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\c3\4fa9439959452a26a0b577a27a6e000106b8ef
 - - .git\objects\c3\502e00721efb6013dca102584f0317e172a8b4
 - - .git\objects\c3\64ca5bc0cc4804d5b5b943edc8bd338cf91e5b
+- - .git\objects\c3\76cc00bf7e0de98d8dad821643764be5016126
 - - .git\objects\c3\7b7355a7c6353351521a262e618fedb18e4422
 - - .git\objects\c3\ac78401e40a66bef6eea6524f12278444f2c24
 - - .git\objects\c3\bdedef4f6a65049fc6e1300f235032a24c0cef
@@ -1544,6 +1551,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\c4\821f716e9bfe6e6f1cc95e70c40904a6c46708
 - - .git\objects\c4\bc91f44344aabaea618abb89efb5a9dcaf023c
 - - .git\objects\c4\c0bf6210c176132bcca9ff71281b7b274bb92f
+- - .git\objects\c4\dab2d0bae5c6481caa640816ff9e69f0e5c137
 - - .git\objects\c4\e7f31b2626baa91ff6f0b509a0afd920a6aaed
 - - .git\objects\c5\7dabb080aa061b559ad04869f879a831cdc69c
 - - .git\objects\c5\8096bbf1ec94f0fa08b21fac11e20323db8149
@@ -1600,6 +1608,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\cb\353fc126ede9e12161955d7c0dc76f8639c742
 - - .git\objects\cb\68ed8392e92be62b73807959914466ecd98625
 - - .git\objects\cb\890a4f81b7dce3843c61791bf8555568b7f9c6
+- - .git\objects\cb\c0f55ac8fdbeafed08ba3b4f548b92556c86a5
 - - .git\objects\cb\c25449fe7130ca838623bfd9578aa0ec5914bb
 - - .git\objects\cb\df2cf1819eaff44c205abd8f62f80a219c55a6
 - - .git\objects\cb\f9d930d452f46a5465bb8cf71bacb8e8b0694e
@@ -1623,6 +1632,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\cd\efe027b83b5fb42c1a5e41119d37c0f5f51a19
 - - .git\objects\ce\16b222c3b4583cd5290b097ad8a6c35dd6af36
 - - .git\objects\ce\667c1a67601f1815fa3586190916ec4605a8ce
+- - .git\objects\ce\76102be8933821cc32f1f28fed9c95b2ed6e0a
 - - .git\objects\ce\774a532e12bafba8254460e3fb9f8824f40a87
 - - .git\objects\ce\96de923c43138ff31edc43a4299a8c249ff73b
 - - .git\objects\cf\0531c4c6988e79fa4a5342c500b86f9c3a902e
@@ -1690,6 +1700,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\da\d436d0e257e0e98d44d57adb3466b2e1efcfb9
 - - .git\objects\da\e74b6dfba9e317f07db8dc0bfbb40d118a98b7
 - - .git\objects\da\ee9788bb326e55c1b1a3e2238035fac5cb2213
+- - .git\objects\db\088f8458ad61a320e665ec410968688c2225dc
 - - .git\objects\db\4c2eb8f0b52c529aac47471f37c3b056859d95
 - - .git\objects\db\78d96a6752bea1244ca9129fdbcabff43d93db
 - - .git\objects\db\87ba605c9a6236443c74720c60fc523ba3e3c1
@@ -1783,6 +1794,7 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\e9\f44f309dea8c9d161fde2d9d4970d72105944b
 - - .git\objects\ea\0b3902c1955f25939df9179f5bbab0b0fec0c3
 - - .git\objects\ea\1f4573775cc3cf39b3d27346652d09fcf59155
+- - .git\objects\ea\3a4d2c68725da402a8c2293fb05d33785bc4cc
 - - .git\objects\ea\4367017883856b43d484fdc1810cb55adca8b9
 - - .git\objects\ea\6b144ac4ba76feff4b50c44912362c00d7c953
 - - .git\objects\ea\9f0306e31791350dbb3cd5f96dd85aedeafa00
@@ -1939,6 +1951,9 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - .git\objects\ff\a1437df034fc4d97cf28b58598cce60adbc795
 - - .git\objects\ff\d3cccb7a688d210c6b139815763dc820797c40
 - - .git\objects\ff\e793aae171a1193981b076d530fa5eeac9b743
+- - .git\objects\pack\pack-084c95cebedf4abbd2e540ae54df56839a661cc9.idx
+- - .git\objects\pack\pack-084c95cebedf4abbd2e540ae54df56839a661cc9.pack
+- - .git\objects\pack\pack-084c95cebedf4abbd2e540ae54df56839a661cc9.rev
 - - .git\refs\heads\main
 - - .git\refs\remotes\origin\main
 - - .godot\.gdignore
@@ -3754,170 +3769,135 @@ I also would like to fix the player initial position in VR, it's appearing back 
 - - scripts\playerSceneListResource.gd
 - - scripts\playerSceneListResource.gd.uid
 
-📄 scripts\bot.gd:
+📄 scripts\cardGameRules.gd:
 ```gd
-extends Node3D
-class_name Bot
+extends Node
+class_name CardGameRules
 
-# Team assignment
-enum Team {
-	PLAYER_TEAM,
-	ENEMY_TEAM
+## CardGameRules
+##
+## Provides rules and filtering for each supported game.
+## Used to determine:
+## - Which cards are allowed
+## - The rank order for strength comparisons
+
+
+# Dictionary of per-game rules
+const GAME_RULES: Dictionary = {
+	"truco": {
+		"allowed_cards": [ # Truco uses 40 cards: no 8, 9, or 10
+			"A", "2", "3", "4", "5", "6", "7", "J", "Q", "K"
+		],
+		"rank_order": [ # Lowest to highest (for compare logic)
+			"4", "5", "6", "7", "Q", "J", "K", "A", "2", "3"
+		]
+	},
+
+	"poker": {
+		"allowed_cards": [ # All 52 cards allowed
+			"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
+		],
+		"rank_order": [ # Poker-style order
+			"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"
+		]
+	}
 }
 
-# Difficulty levels
-enum Difficulty {
-	EASY,
-	NORMAL,
-	HARD,
-	EXPERT
-}
 
-# Export so you can configure them in the editor — or set from code before calling `apply_bot_appearance()`
-@export var team: Team = Team.ENEMY_TEAM
-@export var difficulty: Difficulty = Difficulty.EASY
+## Checks if a card (e.g. "sK") is valid in the given game
+static func is_card_allowed(card_id: String, game: String) -> bool:
+	if not GAME_RULES.has(game):
+		push_warning("CardGameRules: Unknown game '%s'" % game)
+		return false
 
-# Resources
-var easy_material := preload("res://resources/0_easy_material.tres")
-var normal_material := preload("res://resources/1_normal_material.tres")
-var hard_material := preload("res://resources/2_hard_material.tres")
-var expert_material := preload("res://resources/3_expert_material.tres")
-var led_red_material := preload("res://resources/led_red_material.tres")
+	var value = card_id.substr(1)
+	return value in GAME_RULES[game]["allowed_cards"]
 
-# Pulse settings
-var pulse_speed := 2.0
-var pulse_amplitude := 0.5
-var base_emission_energy := 0.5
 
-var led_node: MeshInstance3D = null
-var led_material_instance: StandardMaterial3D = null
+## Returns the strength rank of a card in a specific game
+## Higher value = stronger card
+static func get_card_rank(card_id: String, game: String) -> int:
+	if not GAME_RULES.has(game):
+		push_warning("CardGameRules: Unknown game '%s'" % game)
+		return -1
 
-func _ready() -> void:
-	# Don’t call _apply_bot_appearance() here — let the Arena decide when
-	pass
+	var value = card_id.substr(1)
+	var order = GAME_RULES[game]["rank_order"]
 
-func _process(delta: float) -> void:
-	_pulse_led()
+	if not order.has(value):
+		return -1
 
-func apply_bot_appearance() -> void:
-	var carcass = get_node_or_null("Sphere/Carcass")
-	var led = get_node_or_null("Sphere/Led")
-
-	if carcass:
-		match difficulty:
-			Difficulty.EASY:
-				carcass.material_override = easy_material
-			Difficulty.NORMAL:
-				carcass.material_override = normal_material
-			Difficulty.HARD:
-				carcass.material_override = hard_material
-			Difficulty.EXPERT:
-				carcass.material_override = expert_material
-
-	if led:
-		led_node = led
-		if team == Team.ENEMY_TEAM:
-			led_material_instance = led_red_material.duplicate() as StandardMaterial3D
-			led.material_override = led_material_instance
-		else:
-			var base_material = led.get_active_material(0)
-			if base_material and base_material is StandardMaterial3D:
-				led_material_instance = base_material
-
-func _pulse_led() -> void:
-	if not led_material_instance:
-		return
-
-	var time = Time.get_ticks_msec() / 1000.0
-	var pulse = sin(time * pulse_speed) * pulse_amplitude + base_emission_energy
-	led_material_instance.emission_energy = pulse
+	# Strongest cards get highest score
+	return order.size() - order.find(value)
 ```
 
-📄 scripts\card.gd:
+📄 scripts\CardHand.gd:
 ```gd
 extends Node3D
-class_name Card
+class_name CardHand
 
-@export var card_name: String = ""
+## 📌 Slot positions for cards (max 3)
+@onready var card_slots := [
+	$CardSlot1,
+	$CardSlot2,
+	$CardSlot3
+]
 
-var front_material: StandardMaterial3D = null
-var back_material: StandardMaterial3D = null
-var is_face_up: bool = false
+## 🃏 Currently held cards
+var cards: Array[Node3D] = []
 
-signal card_grabbed(card: Card)
+## Assign a new set of cards to this hand
+func set_cards(card_list: Array[Node3D]):
+	cards = card_list
+	_update_slots()
 
-@onready var pickable := $XRToolsPickable
-@onready var front_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Front")
-@onready var back_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Back")
+## Rearrange cards visually in the slots
+func _update_slots():
+	var card_count := cards.size()
 
-const TEXTURE_PATH := "res://assets/card_deck/"
-const BACK_TEXTURE := preload("res://assets/card_deck/background-1.jpg")
-var transparent_material := preload("res://resources/transparent_material.tres")
+	# Show all 3 slots if empty (default state)
+	if card_count == 0:
+		for slot in card_slots:
+			slot.visible = true
+		return
 
-func _ready() -> void:
-	if pickable and pickable.has_signal("grabbed"):
-		pickable.grabbed.connect(_on_grabbed)
+	# Show only the required number of slots
+	for i in range(3):
+		card_slots[i].visible = i < card_count
 
-	if front_mesh:
-		front_material = front_mesh.material_override
-		if front_material == null:
-			front_material = transparent_material
-			front_mesh.material_override = front_material
+	# Position each card over its slot
+	for i in range(card_count):
+		if i >= card_slots.size():
+			continue # prevent out-of-range errors
 
-	if back_mesh:
-		back_material = back_mesh.material_override
-		if back_material == null:
-			back_material = transparent_material
-			back_mesh.material_override = back_material
+		var card := cards[i]
+		if is_instance_valid(card):
+			card.global_transform = card_slots[i].global_transform
 
-	_update_textures()
+			# Ensure grab signal is connected
+			if not card.card_grabbed.is_connected(_on_card_grabbed):
+				card.card_grabbed.connect(_on_card_grabbed)
 
-func _on_grabbed(_interactor) -> void:
-	emit_signal("card_grabbed", self)
+			# Reparent card if needed
+			if not is_instance_valid(card.get_parent()) or card.get_parent() != self:
+				add_child(card)
 
-func set_card(id: String, face_up: bool = false) -> void:
-	card_name = id
-	is_face_up = face_up
-	_update_textures()
+			# Optional freeze after positioning (prevents jitter if physics-enabled)
+			if card.has_method("freeze"):
+				card.freeze = true
 
-func show_front() -> void:
-	is_face_up = true
-	_update_textures()
+## When a card is picked from hand
+func _on_card_grabbed(card: Node3D):
+	if cards.has(card):
+		cards.erase(card)
+		card.reparent(get_tree().root)
+		card.visible = true
+		_update_slots()
+```
 
-func show_back() -> void:
-	is_face_up = false
-	_update_textures()
-
-func _update_textures() -> void:
-	if front_material and card_name != "":
-		var path = TEXTURE_PATH + card_name + ".jpg"
-		if ResourceLoader.exists(path):
-			front_material.albedo_texture = load(path)
-		else:
-			push_warning("⚠️ Texture not found for card: " + card_name)
-
-	if back_material:
-		back_material.albedo_texture = BACK_TEXTURE
-
-	if front_mesh:
-		front_mesh.visible = is_face_up
-
-	if back_mesh:
-		back_mesh.visible = not is_face_up
-
-# Game logic
-func get_strength() -> int:
-	var game = GameManager.current_game
-	if CardRanks.is_manilha(card_name):
-		return 99
-	return CardGameRules.get_card_rank(card_name, game)
-
-func compare_to(other: Card) -> int:
-	var game = GameManager.current_game
-	return CardRanks.compare_cards(card_name, other.card_name, game)
-
-func is_manilha() -> bool:
-	return CardRanks.is_manilha(card_name)
+📄 scripts\gameManager.gd.uid:
+```uid
+uid://dnsuutrqpp1qq
 ```
 
 📄 scenes\bot.tscn:

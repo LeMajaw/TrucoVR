@@ -3,9 +3,9 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://uvy3rmtlx2vu"
-path.etc2="res://.godot/imported/monobloc_plastic_garden_chair_1.png-77539c1ac479023aba1793305a1ad461.etc2.ctex"
+path.s3tc="res://.godot/imported/monobloc_plastic_garden_chair_1.png-77539c1ac479023aba1793305a1ad461.s3tc.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/chair/monobloc_plastic_garden_chair_1.png"
-dest_files=["res://.godot/imported/monobloc_plastic_garden_chair_1.png-77539c1ac479023aba1793305a1ad461.etc2.ctex"]
+dest_files=["res://.godot/imported/monobloc_plastic_garden_chair_1.png-77539c1ac479023aba1793305a1ad461.s3tc.ctex"]
 
 [params]
 

@@ -3,9 +3,9 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://nohg52tvtiau"
-path.etc2="res://.godot/imported/s9.jpg-6402877a81af40183054a3e4245a00b2.etc2.ctex"
+path.s3tc="res://.godot/imported/s9.jpg-6402877a81af40183054a3e4245a00b2.s3tc.ctex"
 metadata={
-"imported_formats": ["etc2_astc"],
+"imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +15,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/card_deck/s9.jpg"
-dest_files=["res://.godot/imported/s9.jpg-6402877a81af40183054a3e4245a00b2.etc2.ctex"]
+dest_files=["res://.godot/imported/s9.jpg-6402877a81af40183054a3e4245a00b2.s3tc.ctex"]
 
 [params]
 
