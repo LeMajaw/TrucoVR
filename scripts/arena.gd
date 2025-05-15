@@ -143,7 +143,7 @@ func _spawn_player() -> void:
 	# 🟩 Save table position for use in Player recenter logic
 	if player_instance is Player:
 		player_instance.table_position = table_node.global_transform.origin
-	
+
 	left_hand = player_instance.get_node("LeftTrackedHand")
 	right_hand = player_instance.get_node("RightTrackedHand")
 	camera = player_instance.get_node("XRCamera3D")
@@ -168,12 +168,6 @@ func _spawn_deck() -> void:
 	deck_instance.setup_deck()
 
 	GameManager.deck = deck_instance
-
-	var vira_marker = table_node.get_node_or_null("ViraMarker")
-	if vira_marker:
-		GameManager.vira_card_position = vira_marker
-	else:
-		push_warning("🟡 No ViraMarker found — vira card will not be positioned.")
 
 	print("✅ Deck placed at:", deck_instance.global_transform.origin)
 

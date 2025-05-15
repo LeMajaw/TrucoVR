@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends Node3D
 class_name Deck
 
 # --- Exported ---
@@ -11,11 +11,12 @@ signal card_drawn(card: Card)
 @onready var touch_area: Area3D = $TouchTrigger
 @onready var spawn_point_node: Node3D = get_node(spawn_point_path)
 @onready var flip_card_sound: AudioStreamPlayer3D = $FlippingCardSound
+@onready var vira_spawn_node: Marker3D = $ViraSpawnPoint
 
 # --- State ---
 var game_started := false
-var vira_card: Card
 var deck: Array[Card] = []
+var vira_card: Card
 
 # --- Constants ---
 const SUITS = ["s", "h", "d", "c"]
@@ -54,14 +55,14 @@ func start_truco_round():
 
 	print("🃎 Dealing order:", hands.map(func(h): return h.name))
 
-	await _animate_card_dealing(hands, 3)
+	# await _animate_card_dealing(hands, 3) # Descomentar depois ####################################################
 	await get_tree().process_frame
-	await _reveal_vira()
+	_reveal_vira()
 
 # --- Build and shuffle deck ---
 func setup_deck():
 	for child in get_children():
-		if child is Card:
+		if child is Card and child != vira_card:
 			remove_child(child)
 			child.queue_free()
 
@@ -156,58 +157,59 @@ func _animate_card_dealing(hands: Array[Node3D], cards_per_hand: int = 3) -> voi
 		if "set_cards" in hand:
 			hand.call("set_cards", cards)
 
-# --- Reveal vira with flip and slide ---
-func _reveal_vira() -> void:
-	vira_card = draw_card()
-	if not vira_card:
-		push_error("❌ Failed to draw vira card")
+# --- Reveal vira ---
+func spawn_vira_card(card_data: Dictionary) -> Card:
+	var new_vira_card = CARD_SCENE.instantiate() as Card
+	add_child(new_vira_card)
+
+	new_vira_card.set_card(card_data.name, true)
+	new_vira_card.visible = true
+	new_vira_card.scale = Vector3.ONE
+
+	await get_tree().process_frame # 🔁 ensure all @onready vars initialized
+	print("🧪 Vira spawn valid?:", is_instance_valid(vira_spawn_node))
+	print("🧪 Node path:", vira_spawn_node.get_path() if is_instance_valid(vira_spawn_node) else "NULL")
+
+	_set_vira_transform(new_vira_card)
+
+	return new_vira_card
+
+func _set_vira_transform(card: Card) -> void:
+	if not is_instance_valid(card) or not is_instance_valid(vira_spawn_node):
+		push_error("❌ Invalid instances in _set_vira_transform")
 		return
 
-	# Set card face and update textures
-	vira_card.set_card(vira_card.card_name, true)
-	vira_card._update_textures()
-	vira_card.visible = true
-	vira_card.scale = Vector3.ONE
-	vira_card.rotation_degrees = Vector3.ZERO
+	# Use the spawn node's full transform for position and rotation
+	var transform := vira_spawn_node.global_transform
 
-	# Disable physics/grab logic if applicable
-	if vira_card.has_node("XRToolsPickable"):
-		vira_card.get_node("XRToolsPickable").set_physics_process(false)
+	transform.basis = Basis(Vector3.UP, deg_to_rad(90)) * transform.basis
 
-	# Calculate the desired global transform
-	var deck_global_transform = global_transform
-	var deck_height = deck.size() * 0.005 + 0.02
-	var vira_global_position = deck_global_transform.origin + Vector3(0.06, deck_height * 0.5 - 0.01, 0)
+	card.global_transform = transform
+	card.freeze_card()
 
-	var vira_basis = Basis()
-	vira_basis = vira_basis.rotated(Vector3(1, 0, 0), deg_to_rad(90)) # Lay flat
-	vira_basis = vira_basis.rotated(Vector3(0, 1, 0), deg_to_rad(90)) # Rotate toward player
+	print("✅ Vira card placed at:", transform.origin)
+	print("🎯 Vira rotation basis:", transform.basis)
 
-	var vira_global_transform = Transform3D(vira_basis, vira_global_position)
+func _reveal_vira() -> void:
+	if deck.is_empty():
+		push_error("❌ Deck is empty when trying to draw vira")
+		return
 
-	# Set the global transform before reparenting
-	vira_card.global_transform = vira_global_transform
+	var vira_id = deck.pop_back().card_name
 
-	# Reparent the card to the deck, preserving the global transform
-	vira_card.reparent(self, true)
+	if vira_card and vira_card.is_inside_tree():
+		vira_card.queue_free()
+		await get_tree().process_frame
 
-	# Ensure correct visual side
-	var front = vira_card.get_node_or_null("XRToolsPickable/CardBody/Front")
-	var back = vira_card.get_node_or_null("XRToolsPickable/CardBody/Back")
-	if front:
-		front.visible = true
-	if back:
-		back.visible = false
+	var new_vira = await spawn_vira_card({"name": vira_id})
+	new_vira.freeze_card()
+
+	vira_card = new_vira
 
 	if flip_card_sound:
 		flip_card_sound.play()
 
-	if vira_card.has_method("freeze"):
-		vira_card.freeze = true
+	CardRanks.set_vira(vira_id)
 
-	print("🃏 Vira card name:", vira_card.card_name)
-	print("📍 Vira global position:", vira_card.global_transform.origin)
-	print("📍 Deck global position:", deck_global_transform.origin)
-	print("📦 Deck height estimate:", deck_height)
-
-	CardRanks.set_vira(vira_card.card_name)
+	print("🃏 Vira card name:", vira_id)
+	print("📦 Deck position:", global_transform.origin)

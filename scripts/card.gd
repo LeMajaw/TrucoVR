@@ -75,6 +75,21 @@ func _update_textures() -> void:
 	if back_mesh:
 		back_mesh.visible = not is_face_up
 
+func freeze_card() -> void:
+	if has_node("XRToolsPickable"):
+		var pickable = get_node("XRToolsPickable")
+
+		pickable.set_process(false)
+		pickable.set_physics_process(false)
+
+		if pickable.has_node("CollisionShape3D"):
+			pickable.get_node("CollisionShape3D").disabled = true
+
+		pickable.set("freeze", true)
+
+	self.set_process(false)
+	self.set_physics_process(false)
+
 
 # Game logic
 func get_strength() -> int:

@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcxjpa5ovt3gi"]
+[gd_scene load_steps=10 format=3 uid="uid://dcxjpa5ovt3gi"]
 
 [ext_resource type="Script" uid="uid://dh75tkiuv858q" path="res://scripts/deck.gd" id="1_gdbsr"]
 [ext_resource type="Shader" uid="uid://c0estke3b4nli" path="res://miscellaneous/deck.gdshader" id="2_6rnap"]
 [ext_resource type="Texture2D" uid="uid://dk0tr025cguwj" path="res://assets/card_deck/52-card_deck_0.jpg" id="3_gdbsr"]
 [ext_resource type="AudioStream" uid="uid://m15qnko8qxag" path="res://miscellaneous/dealingCards.wav" id="4_er72m"]
 [ext_resource type="AudioStream" uid="uid://dxwpdkurpn8aj" path="res://miscellaneous/flippingCards.wav" id="5_d715x"]
+[ext_resource type="PackedScene" uid="uid://b01vhhgrvh0jt" path="res://scenes/card.tscn" id="6_aowtv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gdbsr"]
 render_priority = 0
@@ -21,7 +22,7 @@ material = SubResource("ShaderMaterial_gdbsr")
 size = Vector3(0.1, 0.05, 0.15)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gdbsr"]
-size = Vector3(0.001, 0.05, 0.2)
+size = Vector3(0.15, 0.05, 0.2)
 
 [node name="Deck" type="StaticBody3D"]
 script = ExtResource("1_gdbsr")
@@ -30,7 +31,7 @@ script = ExtResource("1_gdbsr")
 mesh = SubResource("BoxMesh_er72m")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 shape = SubResource("BoxShape3D_gdbsr")
 
 [node name="SpawnPoint" type="Marker3D" parent="."]
@@ -39,7 +40,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, 0)
 [node name="TouchTrigger" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TouchTrigger"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 shape = SubResource("BoxShape3D_gdbsr")
 
 [node name="DealingCardsSound" type="AudioStreamPlayer3D" parent="."]
@@ -47,3 +48,10 @@ stream = ExtResource("4_er72m")
 
 [node name="FlippingCardSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5_d715x")
+
+[node name="ViraOld" parent="." instance=ExtResource("6_aowtv")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.06, -0.02, 0)
+visible = false
+
+[node name="ViraSpawnPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, -0.01, 0)

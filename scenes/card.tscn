@@ -3,38 +3,37 @@
 [ext_resource type="Script" uid="uid://cse0ufc55236n" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Script" uid="uid://caufs1n7qeug3" path="res://addons/godot-xr-tools/objects/pickable.gd" id="1_d81rb"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_d81rb"]
+size = Vector3(0.06, 0.001, 0.09)
+
 [sub_resource type="BoxMesh" id="BoxMesh_6u4wf"]
-size = Vector3(0.06, 0.002, 0.09)
+size = Vector3(0.06, 0.001, 0.09)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ktuci"]
-size = Vector2(0.06, 0.002)
+size = Vector2(0.06, 0.09)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_kg30u"]
-size = Vector2(0.06, 0.002)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_sy11y"]
-size = Vector3(0.06, 0.002, 0.09)
+custom_aabb = AABB(0, -0.001, 0, 0, 0, 0)
+size = Vector2(0.06, 0.09)
 
 [node name="Card" type="Node3D"]
 script = ExtResource("1_6u4wf")
 
 [node name="XRToolsPickable" type="RigidBody3D" parent="."]
-collision_layer = 4
-collision_mask = 196615
-freeze_mode = 1
 script = ExtResource("1_d81rb")
+metadata/_custom_type_script = "uid://caufs1n7qeug3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XRToolsPickable"]
+shape = SubResource("BoxShape3D_d81rb")
 
 [node name="CardBody" type="MeshInstance3D" parent="XRToolsPickable"]
 mesh = SubResource("BoxMesh_6u4wf")
 skeleton = NodePath("")
 
 [node name="Front" type="MeshInstance3D" parent="XRToolsPickable/CardBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, 0)
 mesh = SubResource("PlaneMesh_ktuci")
 
 [node name="Back" type="MeshInstance3D" parent="XRToolsPickable/CardBody"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = SubResource("PlaneMesh_kg30u")
-skeleton = NodePath("../Front")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="XRToolsPickable"]
-shape = SubResource("BoxShape3D_sy11y")
