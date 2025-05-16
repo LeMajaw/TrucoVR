@@ -19,8 +19,8 @@ var deck: Array[Card] = []
 var vira_card: Card
 
 # --- Constants ---
-const SUITS = ["s", "h", "d", "c"]
-const VALUES = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+const SUITS = ["spades", "hearts", "diamonds", "clubs"]
+const VALUES = ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"]
 const CARD_SCENE: PackedScene = preload("res://scenes/card.tscn")
 
 # --- Ready ---
@@ -55,7 +55,7 @@ func start_truco_round():
 
 	print("🃎 Dealing order:", hands.map(func(h): return h.name))
 
-	# await _animate_card_dealing(hands, 3) # Descomentar depois ####################################################
+	await _animate_card_dealing(hands, 3)
 	await get_tree().process_frame
 	_reveal_vira()
 
@@ -69,7 +69,7 @@ func setup_deck():
 	deck.clear()
 	for suit in SUITS:
 		for value in VALUES:
-			var id = "%s%s" % [suit, value]
+			var id = "%s_%s" % [value, suit]
 			if not CardGameRules.is_card_allowed(id, GameManager.current_game):
 				continue
 

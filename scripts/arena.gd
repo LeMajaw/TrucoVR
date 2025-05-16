@@ -12,7 +12,6 @@ var player_instance: XROrigin3D
 var left_palm_menu: PalmMenu
 var right_palm_menu: PalmMenu
 var deck_instance: Deck
-var chairs: Array[Chair] = []
 
 enum HandOwner {NONE = -1, LEFT = 0, RIGHT = 1}
 var current_menu_owner: HandOwner = HandOwner.NONE
@@ -29,13 +28,6 @@ var current_menu_owner: HandOwner = HandOwner.NONE
 
 
 func _ready():
-	chairs = [
-		$Chairs/Chair1,
-		$Chairs/Chair2,
-		$Chairs/Chair3,
-		$Chairs/Chair4
-	]
-
 	await get_tree().process_frame
 	await get_tree().create_timer(0.2).timeout
 
@@ -50,6 +42,15 @@ func _ready():
 	GameManager.bot3_hand = $Chairs/Chair4/Bot3/CardHand
 
 	GameManager.setup_round()
+
+	await get_tree().process_frame
+	seat_player_at_chair(player_chair)
+
+func _input(event):
+	if event is InputEventJoypadButton and event.button_index == JOY_BUTTON_GUIDE and event.pressed:
+		print("🔄 Meta button pressed → Re-seating player")
+		seat_player_at_chair(player_chair)
+
 
 # --- Palm Menu Logic ---
 func _process(_delta: float) -> void:
@@ -148,6 +149,15 @@ func _spawn_player() -> void:
 	right_hand = player_instance.get_node("RightTrackedHand")
 	camera = player_instance.get_node("XRCamera3D")
 
+func seat_player_at_chair(chair: Chair):
+	var seat_position := chair.get_node("SeatPosition") as Marker3D
+
+	# Move player rig to seat position
+	player_instance.global_transform = seat_position.global_transform
+
+	# Recenter XR origin
+	#XRServer.center_on_hmd(XRServer.RESET_FULL_ROTATION, true)
+	XRServer.center_on_hmd(0, true)
 
 # --- Deck Spawn ---
 func _spawn_deck() -> void:

@@ -56,6 +56,9 @@ data = PackedVector3Array(0.3103, -0.1852, 0.8343, 0.3092, -0.1255, 0.7786, 0.31
 [node name="Chair" type="Node3D"]
 script = ExtResource("1_3fp06")
 
+[node name="SeatPosition" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575, -0.075)
+
 [node name="PlasticMaterial" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("ArrayMesh_o5biw")

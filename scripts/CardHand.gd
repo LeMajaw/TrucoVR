@@ -53,8 +53,29 @@ func _update_slots():
 
 ## When a card is picked from hand
 func _on_card_grabbed(card: Node3D):
-	if cards.has(card):
+	if not cards.has(card):
+		return
+
+	var from_index = cards.find(card)
+	var to_index = _get_slot_index_under(card)
+
+	if to_index != -1 and to_index != from_index:
+		# 🟢 Swap if dropped over a different slot
+		var other_card = cards[to_index]
+		cards[to_index] = card
+		cards[from_index] = other_card
+	else:
+		# 🔴 Just remove it from the hand
 		cards.erase(card)
 		card.reparent(get_tree().root)
 		card.visible = true
-		_update_slots()
+
+	_update_slots() # ✅ Always called once at the end
+
+func _get_slot_index_under(card: Node3D) -> int:
+	for i in range(card_slots.size()):
+		var slot = card_slots[i]
+		var distance = slot.global_position.distance_to(card.global_position)
+		if distance < 0.15: # 👈 adjust threshold based on scale
+			return i
+	return -1

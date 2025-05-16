@@ -18,7 +18,31 @@ func _ready() -> void:
 	PalmMenuManager.register_menu(is_left_hand, self)
 	hand_pose_controller = get_node_or_null(hand_pose_controller_path)
 
-func show_menu():
+func show_menu(cards: Array = []):
+	var camera := get_viewport().get_camera_3d()
+
+	if card_hand == null:
+		push_warning("🟠 card_hand not ready.")
+		return
+
+	if not card_hand.has_variable("card_slots"):
+		push_warning("🟠 card_hand has no 'card_slots' variable.")
+		return
+
+	var slots: Array = card_hand.card_slots
+
+	for i in range(slots.size()):
+		var slot = slots[i]
+		if i < cards.size():
+			slot.texture = cards[i]
+			slot.show()
+
+			if camera:
+				var target = slot.global_transform.looking_at(camera.global_transform.origin, Vector3.UP)
+				slot.global_transform = target
+		else:
+			slot.hide()
+
 	visible = true
 
 func hide_menu():

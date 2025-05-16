@@ -1,72 +1,85 @@
-[gd_scene load_steps=10 format=3 uid="uid://bl6r5mv1s78r8"]
+[gd_scene load_steps=14 format=3 uid="uid://0ixiym0ov3ad"]
 
-[ext_resource type="Script" uid="uid://c088kye1hl7k8" path="res://scripts/palmMenu.gd" id="1_37qpl"]
-[ext_resource type="Script" uid="uid://cde3r11qku5hy" path="res://addons/godot-xr-tools/interactables/interactable_area_button.gd" id="1_g4gdb"]
-[ext_resource type="PackedScene" uid="uid://dma0lyrfkqdol" path="res://scenes/cardHand.tscn" id="2_2my3i"]
+[ext_resource type="Script" uid="uid://c088kye1hl7k8" path="res://scripts/palmMenu.gd" id="1"]
+[ext_resource type="Script" uid="uid://cde3r11qku5hy" path="res://addons/godot-xr-tools/interactables/interactable_area_button.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dma0lyrfkqdol" path="res://scenes/cardHand.tscn" id="3"]
+[ext_resource type="Texture2D" uid="uid://de8eh4sejktos" path="res://assets/icons/truco.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://dejy7jgrey2cw" path="res://assets/icons/setting.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://bgjl1e3pv6gly" path="res://assets/icons/menu.png" id="6"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4gdb"]
+[sub_resource type="StandardMaterial3D" id="mat_truco"]
 transparency = 1
-albedo_color = Color(0.101961, 0.101961, 0.101961, 0.498039)
+shading_mode = 0
+albedo_texture = ExtResource("4")
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_37qpl"]
-material = SubResource("StandardMaterial3D_g4gdb")
-size = Vector2(0.3, 0.4)
+[sub_resource type="PlaneMesh" id="mesh_truco"]
+material = SubResource("mat_truco")
+size = Vector2(0.25, 0.25)
 
-[sub_resource type="TextMesh" id="TextMesh_g4gdb"]
-text = "TRUCO!"
+[sub_resource type="CylinderShape3D" id="collider"]
+radius = 0.09
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_g4gdb"]
-size = Vector3(0.04, 0.02, 0.06)
+[sub_resource type="StandardMaterial3D" id="mat_config"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("5")
 
-[sub_resource type="TextMesh" id="TextMesh_37qpl"]
-text = "Configuration"
+[sub_resource type="PlaneMesh" id="mesh_config"]
+material = SubResource("mat_config")
+size = Vector2(0.2, 0.2)
 
-[sub_resource type="TextMesh" id="TextMesh_2my3i"]
-text = "Menu"
+[sub_resource type="StandardMaterial3D" id="mat_menu"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("6")
+
+[sub_resource type="PlaneMesh" id="mesh_menu"]
+material = SubResource("mat_menu")
+size = Vector2(0.2, 0.2)
 
 [node name="PalmMenu" type="MeshInstance3D"]
-mesh = SubResource("PlaneMesh_37qpl")
-script = ExtResource("1_37qpl")
+script = ExtResource("1")
 
-[node name="CardHand" parent="." instance=ExtResource("2_2my3i")]
+[node name="ScoreLabel" type="Label3D" parent="."]
+
+[node name="CardHand" parent="." instance=ExtResource("3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0996825)
 
-[node name="TrucoButton" type="Area3D" parent="."]
-transform = Transform3D(0.3, 0, 0, 0, -1.31134e-08, 0.3, 0, -0.3, -1.31134e-08, 0, 0, 0.085)
-script = ExtResource("1_g4gdb")
+[node name="ButtonPannel" type="Node3D" parent="."]
+
+[node name="TrucoButton" type="Area3D" parent="ButtonPannel"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0.085)
+script = ExtResource("2")
 button = NodePath("MeshInstance3D")
-metadata/_custom_type_script = "uid://cde3r11qku5hy"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="TrucoButton"]
-mesh = SubResource("TextMesh_g4gdb")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ButtonPannel/TrucoButton"]
+mesh = SubResource("mesh_truco")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TrucoButton"]
-shape = SubResource("BoxShape3D_g4gdb")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ButtonPannel/TrucoButton"]
+shape = SubResource("collider")
 
-[node name="ConfigButton" type="Area3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, -0.09, 0, 0.19)
-script = ExtResource("1_g4gdb")
+[node name="ConfigButton" type="Area3D" parent="ButtonPannel"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.15, 0, 0.085)
+script = ExtResource("2")
 button = NodePath("MeshInstance3D")
-metadata/_custom_type_script = "uid://cde3r11qku5hy"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ConfigButton"]
-mesh = SubResource("TextMesh_37qpl")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ButtonPannel/ConfigButton"]
+mesh = SubResource("mesh_config")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ConfigButton"]
-shape = SubResource("BoxShape3D_g4gdb")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ButtonPannel/ConfigButton"]
+shape = SubResource("collider")
 
-[node name="MenuButton" type="Area3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, -4.37114e-09, 0.1, 0, -0.1, -4.37114e-09, 0.12, 0, 0.19)
-script = ExtResource("1_g4gdb")
+[node name="MenuButton" type="Area3D" parent="ButtonPannel"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.15, 0, 0.085)
+script = ExtResource("2")
 button = NodePath("MeshInstance3D")
-metadata/_custom_type_script = "uid://cde3r11qku5hy"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MenuButton"]
-mesh = SubResource("TextMesh_2my3i")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ButtonPannel/MenuButton"]
+mesh = SubResource("mesh_menu")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MenuButton"]
-shape = SubResource("BoxShape3D_g4gdb")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ButtonPannel/MenuButton"]
+shape = SubResource("collider")
 
-[connection signal="button_pressed" from="TrucoButton" to="." method="_on_button_truco_pressed"]
-[connection signal="button_pressed" from="ConfigButton" to="." method="_on_button_config_pressed"]
-[connection signal="button_pressed" from="MenuButton" to="." method="_on_button_menu_pressed"]
+[connection signal="button_pressed" from="ButtonPannel/TrucoButton" to="." method="_on_button_truco_pressed"]
+[connection signal="button_pressed" from="ButtonPannel/ConfigButton" to="." method="_on_button_config_pressed"]
+[connection signal="button_pressed" from="ButtonPannel/MenuButton" to="." method="_on_button_menu_pressed"]

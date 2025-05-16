@@ -276,61 +276,61 @@ func hide_menu(is_left: bool):
 ```tscn
 [gd_scene load_steps=422 format=4 uid="uid://b5sfc7yyrr5k4"]
 
-[ext_resource type="Texture2D" uid="uid://dk0tr025cguwj" path="res://assets/card_deck/52-card_deck_0.jpg" id="1_1ds6s"]
-[ext_resource type="Texture2D" uid="uid://buv2kyfnv345f" path="res://assets/card_deck/52-card_deck_1.png" id="2_w2617"]
-[ext_resource type="Texture2D" uid="uid://ck3vennh5nbs7" path="res://assets/card_deck/52-card_deck_2.jpg" id="3_g4brf"]
-[ext_resource type="Texture2D" uid="uid://3d4k00gjaf8v" path="res://assets/card_deck/52-card_deck_3.jpg" id="4_1v5wu"]
-[ext_resource type="Texture2D" uid="uid://c4pi7tdk50s2q" path="res://assets/card_deck/52-card_deck_4.jpg" id="5_uosfd"]
-[ext_resource type="Texture2D" uid="uid://ceqqcx3vsvstd" path="res://assets/card_deck/52-card_deck_5.jpg" id="6_kvvvl"]
-[ext_resource type="Texture2D" uid="uid://b35tp3st2y0py" path="res://assets/card_deck/52-card_deck_6.jpg" id="7_ts4mb"]
-[ext_resource type="Texture2D" uid="uid://e6xa52j8h41e" path="res://assets/card_deck/52-card_deck_7.jpg" id="8_ycbyf"]
-[ext_resource type="Texture2D" uid="uid://bnhbkmatdsvah" path="res://assets/card_deck/52-card_deck_8.jpg" id="9_ckwr8"]
-[ext_resource type="Texture2D" uid="uid://cqewqwbxdyoe3" path="res://assets/card_deck/52-card_deck_9.jpg" id="10_4f5jf"]
-[ext_resource type="Texture2D" uid="uid://dqh0yrnxwipy2" path="res://assets/card_deck/52-card_deck_10.jpg" id="11_ffdmh"]
-[ext_resource type="Texture2D" uid="uid://c5vwkc58uirqd" path="res://assets/card_deck/52-card_deck_11.jpg" id="12_x5kxs"]
-[ext_resource type="Texture2D" uid="uid://867s8w7p16n0" path="res://assets/card_deck/52-card_deck_12.jpg" id="13_xbjk5"]
-[ext_resource type="Texture2D" uid="uid://nvweefweihd8" path="res://assets/card_deck/52-card_deck_13.jpg" id="14_i8nqc"]
-[ext_resource type="Texture2D" uid="uid://bjrkxc8cavnxn" path="res://assets/card_deck/52-card_deck_14.jpg" id="15_o68e1"]
-[ext_resource type="Texture2D" uid="uid://2gru55eqlyiv" path="res://assets/card_deck/52-card_deck_15.jpg" id="16_seo6i"]
-[ext_resource type="Texture2D" uid="uid://dkxfh830caw6d" path="res://assets/card_deck/52-card_deck_16.jpg" id="17_mjpqu"]
-[ext_resource type="Texture2D" uid="uid://dt0cka15qrc08" path="res://assets/card_deck/52-card_deck_28.jpg" id="18_ielnj"]
-[ext_resource type="Texture2D" uid="uid://xd1sq7sy7xq" path="res://assets/card_deck/52-card_deck_27.jpg" id="19_qv613"]
-[ext_resource type="Texture2D" uid="uid://ceod2snyf7ygh" path="res://assets/card_deck/52-card_deck_19.jpg" id="20_upe53"]
-[ext_resource type="Texture2D" uid="uid://cdolvok0pbasw" path="res://assets/card_deck/52-card_deck_18.jpg" id="21_wfrr7"]
-[ext_resource type="Texture2D" uid="uid://cwpw78sqtqcyk" path="res://assets/card_deck/52-card_deck_25.jpg" id="22_nkuyl"]
-[ext_resource type="Texture2D" uid="uid://b8t6dwnsv5s7p" path="res://assets/card_deck/52-card_deck_24.jpg" id="23_bv4o7"]
-[ext_resource type="Texture2D" uid="uid://b0smuu83p3udp" path="res://assets/card_deck/52-card_deck_17.jpg" id="24_vvwxe"]
-[ext_resource type="Texture2D" uid="uid://ddofjhy8pmclc" path="res://assets/card_deck/52-card_deck_22.jpg" id="25_nj7am"]
-[ext_resource type="Texture2D" uid="uid://bmqa4ht04r8sk" path="res://assets/card_deck/52-card_deck_26.jpg" id="26_30a03"]
-[ext_resource type="Texture2D" uid="uid://1oqn0jyfx31s" path="res://assets/card_deck/52-card_deck_20.jpg" id="27_wdtbu"]
-[ext_resource type="Texture2D" uid="uid://rj0wc24ivfki" path="res://assets/card_deck/52-card_deck_23.jpg" id="28_pnuvm"]
-[ext_resource type="Texture2D" uid="uid://p83a7nigqjj0" path="res://assets/card_deck/52-card_deck_21.jpg" id="29_l1nu4"]
-[ext_resource type="Texture2D" uid="uid://d1wpsmigeia5y" path="res://assets/card_deck/52-card_deck_29.jpg" id="30_4j8p5"]
-[ext_resource type="Texture2D" uid="uid://bdh0ocn1cwo2d" path="res://assets/card_deck/52-card_deck_41.jpg" id="31_6relv"]
-[ext_resource type="Texture2D" uid="uid://c7iemgkphgh" path="res://assets/card_deck/52-card_deck_40.jpg" id="32_hseca"]
-[ext_resource type="Texture2D" uid="uid://bt84ca2sns3av" path="res://assets/card_deck/52-card_deck_32.jpg" id="33_65nk3"]
-[ext_resource type="Texture2D" uid="uid://btc8fcqbahuoy" path="res://assets/card_deck/52-card_deck_31.jpg" id="34_tsoka"]
-[ext_resource type="Texture2D" uid="uid://do6wyko7unsrc" path="res://assets/card_deck/52-card_deck_38.jpg" id="35_ideye"]
-[ext_resource type="Texture2D" uid="uid://cosme7whprjmg" path="res://assets/card_deck/52-card_deck_37.jpg" id="36_nmt74"]
-[ext_resource type="Texture2D" uid="uid://bwkvj6tg1mo6r" path="res://assets/card_deck/52-card_deck_30.jpg" id="37_lh4oj"]
-[ext_resource type="Texture2D" uid="uid://ddtpwvt6pec4x" path="res://assets/card_deck/52-card_deck_35.jpg" id="38_14ynt"]
-[ext_resource type="Texture2D" uid="uid://mtbg070goo7t" path="res://assets/card_deck/52-card_deck_39.jpg" id="39_t38ha"]
-[ext_resource type="Texture2D" uid="uid://crtbnusetw5wf" path="res://assets/card_deck/52-card_deck_33.jpg" id="40_3axuv"]
-[ext_resource type="Texture2D" uid="uid://bhk6gyhsmnubm" path="res://assets/card_deck/52-card_deck_36.jpg" id="41_6bo5k"]
-[ext_resource type="Texture2D" uid="uid://d4ajueig4gjm7" path="res://assets/card_deck/52-card_deck_34.jpg" id="42_ghi1e"]
-[ext_resource type="Texture2D" uid="uid://c1p54pojuqnoy" path="res://assets/card_deck/52-card_deck_42.jpg" id="43_v658e"]
-[ext_resource type="Texture2D" uid="uid://daukumb8fyhlp" path="res://assets/card_deck/52-card_deck_54.jpg" id="44_x4wka"]
-[ext_resource type="Texture2D" uid="uid://cp2q85hur5fuu" path="res://assets/card_deck/52-card_deck_53.jpg" id="45_ririo"]
-[ext_resource type="Texture2D" uid="uid://cbdp8sbimm3id" path="res://assets/card_deck/52-card_deck_45.jpg" id="46_ntovf"]
-[ext_resource type="Texture2D" uid="uid://bgnpfhn8jwrdk" path="res://assets/card_deck/52-card_deck_44.jpg" id="47_hjdb6"]
-[ext_resource type="Texture2D" uid="uid://cp1wuc8epl22j" path="res://assets/card_deck/52-card_deck_51.jpg" id="48_13fv4"]
-[ext_resource type="Texture2D" uid="uid://sgi78ghlwpoh" path="res://assets/card_deck/52-card_deck_50.jpg" id="49_5r7cx"]
-[ext_resource type="Texture2D" uid="uid://0xf4miu41n16" path="res://assets/card_deck/52-card_deck_43.jpg" id="50_oclqp"]
-[ext_resource type="Texture2D" uid="uid://bsy2rpx1qbm3b" path="res://assets/card_deck/52-card_deck_48.jpg" id="51_rn1bu"]
-[ext_resource type="Texture2D" uid="uid://c5kfsiysgqan4" path="res://assets/card_deck/52-card_deck_52.jpg" id="52_p6ngj"]
-[ext_resource type="Texture2D" uid="uid://clfsqrd34p7h3" path="res://assets/card_deck/52-card_deck_46.jpg" id="53_4fnvo"]
-[ext_resource type="Texture2D" uid="uid://cnitm15i00ykx" path="res://assets/card_deck/52-card_deck_49.jpg" id="54_2sgga"]
-[ext_resource type="Texture2D" uid="uid://qgx70sfnqbdr" path="res://assets/card_deck/52-card_deck_47.jpg" id="55_1uv63"]
+[ext_resource type="Texture2D" uid="uid://dk0tr025cguwj" path="res://assets/cards/old_version/52-card_deck_0.jpg" id="1_1ds6s"]
+[ext_resource type="Texture2D" uid="uid://buv2kyfnv345f" path="res://assets/cards/old_version/52-card_deck_1.png" id="2_w2617"]
+[ext_resource type="Texture2D" uid="uid://ck3vennh5nbs7" path="res://assets/cards/old_version/52-card_deck_2.jpg" id="3_g4brf"]
+[ext_resource type="Texture2D" uid="uid://3d4k00gjaf8v" path="res://assets/cards/old_version/52-card_deck_3.jpg" id="4_1v5wu"]
+[ext_resource type="Texture2D" uid="uid://c4pi7tdk50s2q" path="res://assets/cards/old_version/52-card_deck_4.jpg" id="5_uosfd"]
+[ext_resource type="Texture2D" uid="uid://ceqqcx3vsvstd" path="res://assets/cards/old_version/52-card_deck_5.jpg" id="6_kvvvl"]
+[ext_resource type="Texture2D" uid="uid://b35tp3st2y0py" path="res://assets/cards/old_version/52-card_deck_6.jpg" id="7_ts4mb"]
+[ext_resource type="Texture2D" uid="uid://e6xa52j8h41e" path="res://assets/cards/old_version/52-card_deck_7.jpg" id="8_ycbyf"]
+[ext_resource type="Texture2D" uid="uid://bnhbkmatdsvah" path="res://assets/cards/old_version/52-card_deck_8.jpg" id="9_ckwr8"]
+[ext_resource type="Texture2D" uid="uid://cqewqwbxdyoe3" path="res://assets/cards/old_version/52-card_deck_9.jpg" id="10_4f5jf"]
+[ext_resource type="Texture2D" uid="uid://dqh0yrnxwipy2" path="res://assets/cards/old_version/52-card_deck_10.jpg" id="11_ffdmh"]
+[ext_resource type="Texture2D" uid="uid://c5vwkc58uirqd" path="res://assets/cards/old_version/52-card_deck_11.jpg" id="12_x5kxs"]
+[ext_resource type="Texture2D" uid="uid://867s8w7p16n0" path="res://assets/cards/old_version/52-card_deck_12.jpg" id="13_xbjk5"]
+[ext_resource type="Texture2D" uid="uid://nvweefweihd8" path="res://assets/cards/old_version/52-card_deck_13.jpg" id="14_i8nqc"]
+[ext_resource type="Texture2D" uid="uid://bjrkxc8cavnxn" path="res://assets/cards/old_version/52-card_deck_14.jpg" id="15_o68e1"]
+[ext_resource type="Texture2D" uid="uid://2gru55eqlyiv" path="res://assets/cards/old_version/52-card_deck_15.jpg" id="16_seo6i"]
+[ext_resource type="Texture2D" uid="uid://dkxfh830caw6d" path="res://assets/cards/old_version/52-card_deck_16.jpg" id="17_mjpqu"]
+[ext_resource type="Texture2D" uid="uid://dt0cka15qrc08" path="res://assets/cards/old_version/52-card_deck_28.jpg" id="18_ielnj"]
+[ext_resource type="Texture2D" uid="uid://xd1sq7sy7xq" path="res://assets/cards/old_version/52-card_deck_27.jpg" id="19_qv613"]
+[ext_resource type="Texture2D" uid="uid://ceod2snyf7ygh" path="res://assets/cards/old_version/52-card_deck_19.jpg" id="20_upe53"]
+[ext_resource type="Texture2D" uid="uid://cdolvok0pbasw" path="res://assets/cards/old_version/52-card_deck_18.jpg" id="21_wfrr7"]
+[ext_resource type="Texture2D" uid="uid://cwpw78sqtqcyk" path="res://assets/cards/old_version/52-card_deck_25.jpg" id="22_nkuyl"]
+[ext_resource type="Texture2D" uid="uid://b8t6dwnsv5s7p" path="res://assets/cards/old_version/52-card_deck_24.jpg" id="23_bv4o7"]
+[ext_resource type="Texture2D" uid="uid://b0smuu83p3udp" path="res://assets/cards/old_version/52-card_deck_17.jpg" id="24_vvwxe"]
+[ext_resource type="Texture2D" uid="uid://ddofjhy8pmclc" path="res://assets/cards/old_version/52-card_deck_22.jpg" id="25_nj7am"]
+[ext_resource type="Texture2D" uid="uid://bmqa4ht04r8sk" path="res://assets/cards/old_version/52-card_deck_26.jpg" id="26_30a03"]
+[ext_resource type="Texture2D" uid="uid://1oqn0jyfx31s" path="res://assets/cards/old_version/52-card_deck_20.jpg" id="27_wdtbu"]
+[ext_resource type="Texture2D" uid="uid://rj0wc24ivfki" path="res://assets/cards/old_version/52-card_deck_23.jpg" id="28_pnuvm"]
+[ext_resource type="Texture2D" uid="uid://p83a7nigqjj0" path="res://assets/cards/old_version/52-card_deck_21.jpg" id="29_l1nu4"]
+[ext_resource type="Texture2D" uid="uid://d1wpsmigeia5y" path="res://assets/cards/old_version/52-card_deck_29.jpg" id="30_4j8p5"]
+[ext_resource type="Texture2D" uid="uid://bdh0ocn1cwo2d" path="res://assets/cards/old_version/52-card_deck_41.jpg" id="31_6relv"]
+[ext_resource type="Texture2D" uid="uid://c7iemgkphgh" path="res://assets/cards/old_version/52-card_deck_40.jpg" id="32_hseca"]
+[ext_resource type="Texture2D" uid="uid://bt84ca2sns3av" path="res://assets/cards/old_version/52-card_deck_32.jpg" id="33_65nk3"]
+[ext_resource type="Texture2D" uid="uid://btc8fcqbahuoy" path="res://assets/cards/old_version/52-card_deck_31.jpg" id="34_tsoka"]
+[ext_resource type="Texture2D" uid="uid://do6wyko7unsrc" path="res://assets/cards/old_version/52-card_deck_38.jpg" id="35_ideye"]
+[ext_resource type="Texture2D" uid="uid://cosme7whprjmg" path="res://assets/cards/old_version/52-card_deck_37.jpg" id="36_nmt74"]
+[ext_resource type="Texture2D" uid="uid://bwkvj6tg1mo6r" path="res://assets/cards/old_version/52-card_deck_30.jpg" id="37_lh4oj"]
+[ext_resource type="Texture2D" uid="uid://ddtpwvt6pec4x" path="res://assets/cards/old_version/52-card_deck_35.jpg" id="38_14ynt"]
+[ext_resource type="Texture2D" uid="uid://mtbg070goo7t" path="res://assets/cards/old_version/52-card_deck_39.jpg" id="39_t38ha"]
+[ext_resource type="Texture2D" uid="uid://crtbnusetw5wf" path="res://assets/cards/old_version/52-card_deck_33.jpg" id="40_3axuv"]
+[ext_resource type="Texture2D" uid="uid://bhk6gyhsmnubm" path="res://assets/cards/old_version/52-card_deck_36.jpg" id="41_6bo5k"]
+[ext_resource type="Texture2D" uid="uid://d4ajueig4gjm7" path="res://assets/cards/old_version/52-card_deck_34.jpg" id="42_ghi1e"]
+[ext_resource type="Texture2D" uid="uid://c1p54pojuqnoy" path="res://assets/cards/old_version/52-card_deck_42.jpg" id="43_v658e"]
+[ext_resource type="Texture2D" uid="uid://daukumb8fyhlp" path="res://assets/cards/old_version/52-card_deck_54.jpg" id="44_x4wka"]
+[ext_resource type="Texture2D" uid="uid://cp2q85hur5fuu" path="res://assets/cards/old_version/52-card_deck_53.jpg" id="45_ririo"]
+[ext_resource type="Texture2D" uid="uid://cbdp8sbimm3id" path="res://assets/cards/old_version/52-card_deck_45.jpg" id="46_ntovf"]
+[ext_resource type="Texture2D" uid="uid://bgnpfhn8jwrdk" path="res://assets/cards/old_version/52-card_deck_44.jpg" id="47_hjdb6"]
+[ext_resource type="Texture2D" uid="uid://cp1wuc8epl22j" path="res://assets/cards/old_version/52-card_deck_51.jpg" id="48_13fv4"]
+[ext_resource type="Texture2D" uid="uid://sgi78ghlwpoh" path="res://assets/cards/old_version/52-card_deck_50.jpg" id="49_5r7cx"]
+[ext_resource type="Texture2D" uid="uid://0xf4miu41n16" path="res://assets/cards/old_version/52-card_deck_43.jpg" id="50_oclqp"]
+[ext_resource type="Texture2D" uid="uid://bsy2rpx1qbm3b" path="res://assets/cards/old_version/52-card_deck_48.jpg" id="51_rn1bu"]
+[ext_resource type="Texture2D" uid="uid://c5kfsiysgqan4" path="res://assets/cards/old_version/52-card_deck_52.jpg" id="52_p6ngj"]
+[ext_resource type="Texture2D" uid="uid://clfsqrd34p7h3" path="res://assets/cards/old_version/52-card_deck_46.jpg" id="53_4fnvo"]
+[ext_resource type="Texture2D" uid="uid://cnitm15i00ykx" path="res://assets/cards/old_version/52-card_deck_49.jpg" id="54_2sgga"]
+[ext_resource type="Texture2D" uid="uid://qgx70sfnqbdr" path="res://assets/cards/old_version/52-card_deck_47.jpg" id="55_1uv63"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cmpp1"]
 resource_name = "01_-_Default"
@@ -6740,12 +6740,12 @@ var hand: Array[Card] = []
 func _ready():
 	await get_tree().process_frame  # Wait 1 frame to ensure XR data is updated
 	await get_tree().process_frame  # Extra frame if needed for accuracy
-	
+
 	var camera = $XRCamera3D
 	var current_y = camera.global_transform.origin.y
-	
+
 	var offset = current_y - target_eye_height
-	
+
 	# Move the entire origin down by the excess head height
 	global_translate(Vector3(0, -offset, 0))
 
@@ -7113,8 +7113,8 @@ signal card_grabbed(card: Card)
 @onready var front_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Front")
 @onready var back_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Back")
 
-const TEXTURE_PATH := "res://assets/card_deck/"
-const BACK_TEXTURE := preload("res://assets/card_deck/background-1.jpg")
+const TEXTURE_PATH := "res://assets/cards/old_version/"
+const BACK_TEXTURE := preload("res://assets/cards/old_version/background-1.jpg")
 var transparent_material := preload("res://resources/transparent_material.tres")
 
 func _ready() -> void:

@@ -13,8 +13,8 @@ signal card_grabbed(card: Card)
 @onready var front_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Front")
 @onready var back_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Back")
 
-const TEXTURE_PATH := "res://assets/card_deck/"
-const BACK_TEXTURE := preload("res://assets/card_deck/background-1.jpg")
+const TEXTURE_PATH := "res://assets/cards/cards_realistic/"
+const BACK_TEXTURE := preload("res://assets/cards/backgrounds/background-1.jpg")
 var transparent_material := preload("res://resources/transparent_material.tres")
 
 func _ready() -> void:
@@ -55,7 +55,7 @@ func show_back() -> void:
 
 func _update_textures() -> void:
 	if front_material and card_name != "":
-		var path = TEXTURE_PATH + card_name + ".jpg"
+		var path = TEXTURE_PATH + card_name + ".png"
 		print("🧩 Loading card texture:", path)
 		if ResourceLoader.exists(path):
 			var tex = load(path)
