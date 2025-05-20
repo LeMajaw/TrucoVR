@@ -28,6 +28,9 @@ var current_menu_owner: HandOwner = HandOwner.NONE
 
 
 func _ready():
+	if not InputMap.has_action("menu_button"):
+		InputMap.add_action("menu_button")
+	
 	await get_tree().process_frame
 	await get_tree().create_timer(0.2).timeout
 
@@ -45,11 +48,6 @@ func _ready():
 
 	await get_tree().process_frame
 	seat_player_at_chair(player_chair)
-
-func _input(event):
-	if event is InputEventJoypadButton and event.button_index == JOY_BUTTON_GUIDE and event.pressed:
-		print("🔄 Meta button pressed → Re-seating player")
-		seat_player_at_chair(player_chair)
 
 
 # --- Palm Menu Logic ---
@@ -78,6 +76,10 @@ func _process(_delta: float) -> void:
 				PalmMenuManager.hide_menu(false)
 				current_menu_owner = HandOwner.NONE
 
+	# ✅ Only trigger once when pressed
+	if Input.is_action_just_pressed("menu_button"):
+		print("🔁 Menu button just pressed — recentering player")
+		force_absolute_player_reset()
 
 func _is_palm_up(hand: Node3D) -> bool:
 	if hand == null:
@@ -151,13 +153,30 @@ func _spawn_player() -> void:
 
 func seat_player_at_chair(chair: Chair):
 	var seat_position := chair.get_node("SeatPosition") as Marker3D
+	var transform := seat_position.global_transform
 
-	# Move player rig to seat position
-	player_instance.global_transform = seat_position.global_transform
+	# 180° rotation so player faces the table
+	transform.basis = transform.basis.rotated(Vector3.UP, deg_to_rad(180))
 
-	# Recenter XR origin
-	#XRServer.center_on_hmd(XRServer.RESET_FULL_ROTATION, true)
-	XRServer.center_on_hmd(0, true)
+	# Move the player rig
+	player_instance.global_transform = transform
+
+	# Reset tracking pose (headset recenters to XR origin)
+	XRServer.center_on_hmd(0, false)
+
+func force_absolute_player_reset():
+	var seat_position := player_chair.get_node("SeatPosition") as Marker3D
+
+	# Create a new transform and apply a 180° Y rotation
+	var transform := seat_position.global_transform
+	transform.basis = transform.basis.rotated(Vector3.UP, deg_to_rad(180))
+
+	# Apply the transform to the player
+	player_instance.global_transform = transform
+
+	# Trigger OpenXR recenter relative to new origin
+	XRServer.center_on_hmd(0, false)
+
 
 # --- Deck Spawn ---
 func _spawn_deck() -> void:
