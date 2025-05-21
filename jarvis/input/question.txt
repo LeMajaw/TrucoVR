@@ -1,4 +1,17 @@
-The player is sat at the chair1 as it should be, but for some reason, the direction of it depends the direction of my real body at the real world.
-Can we set the player fixed at the chair1 1 and facing the table always?
-And can we make the meta button centralize back the player to the center of the chair1 and facing the table too?
-(At this moment the meta button shows its animation but does anything)
+Can you help me to prepare a prompt to send to Manus AI in a way it be able to conclude my game?
+This is the current situation of it and I need to have it working completely in my Meta Quest 3.
+I need that the buttons of the PalmMenu be working properly.
+That the truco, six, nine and twelve calls through the palm menu and 3D visual notifications in game be working.
+That the entire game work within the Truco Paulista Rules.
+I want a main menu before the game (that will be the one acessible from the menu button) with options to play online with
+other 3 players, allowing create room, join room, add bots and select their difficulty level.
+In the menu must have a button to play against bots, them an option to choose between the different difficulties levels
+(easy, normal, hard and expert). In the configurations (the option in the menu and in the PalmMenu too) the user must be able to
+select the volume of the sound effects as cards flipping and the volume of the other players voice (only for palmMenu config
+button and only when in an online match).
+I want a score with the round values and the turn values, like in the image I'm providing to you.
+When the game ends, if it's against bots I want options to rematch and to select new difficult level, and one to return main menu.
+When online I want an option to rematch and one to ajust bot levels (if there's any bot playing) and one to return to main menu.
+The player must be able to change it's cards positions inside it's palmMenu and cards facing down can be playes following the
+rules. The same for the Mao de 11 and for the 11 x 11, where nobody can sees it's own cards or the partner cards or any cards
+until playing them.

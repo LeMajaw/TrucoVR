@@ -4,3 +4,4 @@
 
 # Jarvis specific ignores
 !jarvis/
+!jarvis/**
