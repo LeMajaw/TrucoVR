@@ -11,10 +11,22 @@ class_name CardHand
 ## 🃏 Currently held cards
 var cards: Array[Node3D] = []
 
+## Face down mode flag
+var face_down_mode: bool = false
+
+## Card played signal
+signal card_played(card, face_down)
+signal card_reordered()
+
 ## Assign a new set of cards to this hand
 func set_cards(card_list: Array[Node3D]):
 	cards = card_list
 	_update_slots()
+	
+	# Connect card signals
+	for card in cards:
+		if card is Card and not card.card_played.is_connected(_on_card_played):
+			card.card_played.connect(_on_card_played)
 
 ## Rearrange cards visually in the slots
 func _update_slots():
@@ -47,9 +59,11 @@ func _update_slots():
 			if not is_instance_valid(card.get_parent()) or card.get_parent() != self:
 				add_child(card)
 
-			# Optional freeze after positioning (prevents jitter if physics-enabled)
-			if card.has_method("freeze"):
-				card.freeze = true
+			# Update card visibility based on face_down_mode
+			if face_down_mode:
+				card.show_back()
+			else:
+				card.show_front()
 
 ## When a card is picked from hand
 func _on_card_grabbed(card: Node3D):
@@ -64,6 +78,7 @@ func _on_card_grabbed(card: Node3D):
 		var other_card = cards[to_index]
 		cards[to_index] = card
 		cards[from_index] = other_card
+		emit_signal("card_reordered")
 	else:
 		# 🔴 Just remove it from the hand
 		cards.erase(card)
@@ -72,6 +87,18 @@ func _on_card_grabbed(card: Node3D):
 
 	_update_slots() # ✅ Always called once at the end
 
+## When a card is played
+func _on_card_played(card: Card, face_down: bool):
+	if not cards.has(card):
+		return
+		
+	# Remove card from hand
+	cards.erase(card)
+	_update_slots()
+	
+	# Forward the signal
+	emit_signal("card_played", card, face_down)
+
 func _get_slot_index_under(card: Node3D) -> int:
 	for i in range(card_slots.size()):
 		var slot = card_slots[i]
@@ -79,3 +106,17 @@ func _get_slot_index_under(card: Node3D) -> int:
 		if distance < 0.15: # 👈 adjust threshold based on scale
 			return i
 	return -1
+
+## Set face down mode (for Mão de 11 or 11x11)
+func set_face_down_mode(enabled: bool):
+	face_down_mode = enabled
+	_update_slots()
+
+## Play a card at the specified index
+func play_card_at_index(index: int, face_down: bool = false):
+	if index < 0 or index >= cards.size():
+		return
+		
+	var card = cards[index]
+	if card is Card:
+		card.play_card(face_down)

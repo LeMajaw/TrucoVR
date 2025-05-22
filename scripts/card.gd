@@ -6,8 +6,10 @@ class_name Card
 var front_material: StandardMaterial3D = null
 var back_material: StandardMaterial3D = null
 var is_face_up: bool = false
+var is_frozen: bool = false
 
 signal card_grabbed(card: Card)
+signal card_played(card: Card, face_down: bool)
 
 @onready var pickable := $XRToolsPickable
 @onready var front_mesh: MeshInstance3D = get_node_or_null("XRToolsPickable/CardBody/Front")
@@ -38,6 +40,9 @@ func _ready() -> void:
 	_update_textures()
 
 func _on_grabbed(_interactor) -> void:
+	if is_frozen:
+		return
+		
 	emit_signal("card_grabbed", self)
 
 func set_card(id: String, face_up: bool = false) -> void:
@@ -77,19 +82,45 @@ func _update_textures() -> void:
 
 func freeze_card() -> void:
 	if has_node("XRToolsPickable"):
-		var pickable = get_node("XRToolsPickable")
+		var xr_pickable = get_node("XRToolsPickable")
 
-		pickable.set_process(false)
-		pickable.set_physics_process(false)
+		xr_pickable.set_process(false)
+		xr_pickable.set_physics_process(false)
 
-		if pickable.has_node("CollisionShape3D"):
-			pickable.get_node("CollisionShape3D").disabled = true
+		if xr_pickable.has_node("CollisionShape3D"):
+			xr_pickable.get_node("CollisionShape3D").disabled = true
 
-		pickable.set("freeze", true)
+		xr_pickable.set("freeze", true)
 
 	self.set_process(false)
 	self.set_physics_process(false)
+	is_frozen = true
 
+func unfreeze_card() -> void:
+	if has_node("XRToolsPickable"):
+		var xr_pickable = get_node("XRToolsPickable")
+
+		xr_pickable.set_process(true)
+		xr_pickable.set_physics_process(true)
+
+		if xr_pickable.has_node("CollisionShape3D"):
+			xr_pickable.get_node("CollisionShape3D").disabled = false
+
+		xr_pickable.set("freeze", false)
+
+	self.set_process(true)
+	self.set_physics_process(true)
+	is_frozen = false
+
+# Play this card (either face up or face down)
+func play_card(face_down: bool = false) -> void:
+	if face_down:
+		show_back()
+	else:
+		show_front()
+	
+	freeze_card()
+	emit_signal("card_played", self, face_down)
 
 # Game logic
 func get_strength() -> int:

@@ -1,0 +1,134 @@
+[gd_scene load_steps=17 format=3 uid="uid://c44gxaitg88s8"]
+
+[ext_resource type="Script" uid="uid://cpysmww28ym6w" path="res://scripts/arena.gd" id="1_xdvfk"]
+[ext_resource type="PackedScene" uid="uid://33ne0e6hpwbu" path="res://scenes/table.tscn" id="3_4ag8t"]
+[ext_resource type="PackedScene" uid="uid://bw32k40cupas" path="res://scenes/chair.tscn" id="4_ahd73"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="5_7ft05"]
+[ext_resource type="PackedScene" uid="uid://bok7pfmc82wgl" path="res://scenes/bot.tscn" id="5_8vbsj"]
+[ext_resource type="PackedScene" uid="uid://dp6wt3tav0nmf" path="res://scenes/scenario/wallDoorway.tscn" id="6_41jku"]
+[ext_resource type="PackedScene" uid="uid://dpyd65s4wdlw2" path="res://scenes/scenario/wallWindowClosed.tscn" id="7_k1k1x"]
+[ext_resource type="MeshLibrary" uid="uid://grhpuybb8gk1" path="res://addons/kaykit_dungeon_remastered/Assets/mesh_library.meshlib" id="7_naajo"]
+[ext_resource type="PackedScene" uid="uid://dhv6gepx8a687" path="res://scenes/scenario/wallCorner.tscn" id="8_ajq0i"]
+[ext_resource type="PackedScene" uid="uid://crrl4rc0tnqug" path="res://scenes/scenario/wall.tscn" id="9_8vbsj"]
+[ext_resource type="PackedScene" uid="uid://bckgs23v78g6c" path="res://scenes/scenario/door.tscn" id="10_k1k1x"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0xm2m"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_h2yge"]
+sky_material = SubResource("ProceduralSkyMaterial_0xm2m")
+
+[sub_resource type="Environment" id="Environment_1bvp3"]
+background_mode = 1
+background_color = Color(0.866667, 0.866667, 0.866667, 1)
+sky = SubResource("Sky_h2yge")
+tonemap_mode = 2
+tonemap_exposure = 0.5
+glow_enabled = true
+glow_intensity = 0.4
+glow_strength = 0.7
+glow_bloom = 0.25
+glow_blend_mode = 0
+glow_hdr_threshold = 1.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k1k1x"]
+albedo_color = Color(0.552941, 0.552941, 0.552941, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ajq0i"]
+material = SubResource("StandardMaterial3D_k1k1x")
+size = Vector2(12, 12)
+
+[node name="Arena" type="Node3D"]
+script = ExtResource("1_xdvfk")
+
+[node name="Table" parent="." instance=ExtResource("3_4ag8t")]
+transform = Transform3D(0.01, 0, 0, 0, 0.012, 0, 0, 0, 0.01, 0, 0.03, 0)
+
+[node name="Chairs" type="Node3D" parent="."]
+
+[node name="Chair1" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 1)
+
+[node name="Chair2" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1, 0, 0)
+
+[node name="Bot1" parent="Chairs/Chair2" instance=ExtResource("5_8vbsj")]
+
+[node name="Chair3" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="Bot2" parent="Chairs/Chair3" instance=ExtResource("5_8vbsj")]
+
+[node name="Chair4" parent="Chairs" instance=ExtResource("4_ahd73")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1, 0, 0)
+
+[node name="Bot3" parent="Chairs/Chair4" instance=ExtResource("5_8vbsj")]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_1bvp3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.5, 0)
+light_energy = 0.25
+shadow_enabled = true
+sky_mode = 1
+
+[node name="GridMap" type="GridMap" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh_library = ExtResource("7_naajo")
+cell_octant_size = 1
+cell_center_y = false
+data = {
+"cells": PackedInt32Array(65533, 65533, 1048758, 65533, 65534, 1048758, 65533, 65535, 1048758, 65533, 0, 1048758, 65533, 1, 1048758, 65533, 2, 1048758, 65534, 65533, 1048758, 65534, 65534, 1048758, 65534, 65535, 1048758, 65534, 0, 1048758, 65534, 1, 1048758, 65534, 2, 1048758, 65535, 65533, 1048758, 65535, 65534, 1048758, 65535, 65535, 1048758, 65535, 0, 1048758, 65535, 1, 1048758, 65535, 2, 1048758, 0, 65533, 1048758, 0, 65534, 1048758, 0, 65535, 1048758, 0, 0, 1048758, 0, 1, 1048758, 0, 2, 1048758, 1, 65533, 1048758, 1, 65534, 1048758, 1, 65535, 1048758, 1, 0, 1048758, 1, 1, 1048758, 1, 2, 1048758, 2, 65533, 1048758, 2, 65534, 1048758, 2, 65535, 1048758, 2, 0, 1048758, 2, 1, 1048758, 2, 2, 1048758)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Scenario" type="Node3D" parent="Environment"]
+
+[node name="WallDoorway" parent="Environment/Scenario" instance=ExtResource("6_41jku")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6, 0, 0)
+
+[node name="WallWindowClosed" parent="Environment/Scenario" instance=ExtResource("7_k1k1x")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6, 0, 0)
+
+[node name="WallCorner" parent="Environment/Scenario" instance=ExtResource("8_ajq0i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6)
+
+[node name="WallCorner2" parent="Environment/Scenario" instance=ExtResource("8_ajq0i")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6, 0, -6)
+
+[node name="WallCorner3" parent="Environment/Scenario" instance=ExtResource("8_ajq0i")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -6, 0, 6)
+
+[node name="WallCorner4" parent="Environment/Scenario" instance=ExtResource("8_ajq0i")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6, 0, 6)
+
+[node name="Wall" parent="Environment/Scenario" instance=ExtResource("9_8vbsj")]
+transform = Transform3D(-2.18557e-08, 0, 1, 0, 1, 0, -0.5, 0, -4.37114e-08, -6, 0, -3)
+
+[node name="Wall2" parent="Environment/Scenario" instance=ExtResource("9_8vbsj")]
+transform = Transform3D(-2.18557e-08, 0, 1, 0, 1, 0, -0.5, 0, -4.37114e-08, -6, 0, 3)
+
+[node name="Wall3" parent="Environment/Scenario" instance=ExtResource("9_8vbsj")]
+transform = Transform3D(-2.18557e-08, 0, 1, 0, 1, 0, -0.5, 0, -4.37114e-08, 6, 0, -3)
+
+[node name="Wall4" parent="Environment/Scenario" instance=ExtResource("9_8vbsj")]
+transform = Transform3D(-2.18557e-08, 0, 1, 0, 1, 0, -0.5, 0, -4.37114e-08, 6, 0, 3)
+
+[node name="Wall5" parent="Environment/Scenario" instance=ExtResource("9_8vbsj")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6)
+
+[node name="Wall6" parent="Environment/Scenario" instance=ExtResource("9_8vbsj")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="Door" parent="Environment/Scenario" instance=ExtResource("10_k1k1x")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6, 0, 0.8)
+
+[node name="Roof" type="MeshInstance3D" parent="Environment/Scenario"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("PlaneMesh_ajq0i")
+
+[node name="StartXR" parent="Environment" instance=ExtResource("5_7ft05")]

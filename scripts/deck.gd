@@ -180,15 +180,15 @@ func _set_vira_transform(card: Card) -> void:
 		return
 
 	# Use the spawn node's full transform for position and rotation
-	var transform := vira_spawn_node.global_transform
+	var vira_transform := vira_spawn_node.global_transform
 
-	transform.basis = Basis(Vector3.UP, deg_to_rad(90)) * transform.basis
+	vira_transform.basis = Basis(Vector3.UP, deg_to_rad(90)) * vira_transform.basis
 
-	card.global_transform = transform
+	card.global_transform = vira_transform
 	card.freeze_card()
 
-	print("✅ Vira card placed at:", transform.origin)
-	print("🎯 Vira rotation basis:", transform.basis)
+	print("✅ Vira card placed at:", vira_transform.origin)
+	print("🎯 Vira rotation basis:", vira_transform.basis)
 
 func _reveal_vira() -> void:
 	if deck.is_empty():
